@@ -50,7 +50,11 @@ export default function Home() {
         <section id="about" className="section container">
           <SectionHeading {...sections.about} />
           <div className="about-grid">
-            <p className="large-copy">{p.aboutLead}</p>
+            <div className="about-profile">
+              <p className="large-copy">{p.aboutLead}</p>
+              <div className="tags">{p.aboutKeywords.map(keyword => <span key={keyword}>{keyword}</span>)}</div>
+              <p className="body-copy about-summary">{p.aboutSummary}</p>
+            </div>
             <div>
               <div className="body-copy">{p.about.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div>
               <div className="tags">{p.values.map(value => <span key={value}>{value}</span>)}</div>
@@ -67,7 +71,7 @@ export default function Home() {
                 <div>
                   <h3>{job.role}</h3><p className="company">{job.company}</p>
                   <p className="job-summary">{job.summary}</p>
-                  <div className="tags job-highlights">{job.highlights.map(item => <span key={item}>{item}</span>)}</div>
+                  <div className="tags job-highlights">{job.highlights.map(item => <span key={item.value}><strong>{item.value}</strong><small>{item.note}</small></span>)}</div>
                   <ul>{job.points.map(point => <li key={point}>{point}</li>)}</ul>
                 </div>
               </article>
@@ -115,8 +119,8 @@ export default function Home() {
             {p.skills.map(skill => (
               <article key={skill.id}>
                 <span className="skill-icon" aria-hidden="true">{skill.icon}</span><h3>{skill.title}</h3>
-                <p>{skill.keywords.join(" · ")}</p>
-                <div className="skill-evidence">{skill.evidence.map(item => <p key={item}>{item}</p>)}</div>
+                <p className="skill-keywords">{skill.keywords.join(" / ")}</p>
+                <div className="skill-evidence"><small className="skill-evidence-label">{skill.id === "tools" ? "工作应用" : "工作证据"}</small>{skill.evidence.map(item => <p key={item}>{item}</p>)}</div>
                 {"detail" in skill && <small>{skill.detail}</small>}
               </article>
             ))}
@@ -125,16 +129,14 @@ export default function Home() {
 
         <section id="work" className="section container">
           <SectionHeading {...sections.work} />
-          <div className="work-list">
+          <div className="work-cards">
             {p.works.map((work, index) => (
-              <details key={work.id}>
-                <summary>
-                  <span className="work-number">0{index + 1}</span>
-                  <div><h3>{work.title}</h3><p>{work.summary}</p></div>
-                  <span className="work-type">{work.type}</span><span className="work-open details-symbol" aria-hidden="true">＋</span>
-                </summary>
-                <div className="work-detail"><p>{work.detail}</p></div>
-              </details>
+              <article className="work-card" key={work.id}>
+                <span className="work-number">0{index + 1}</span>
+                <h3>{work.title}</h3>
+                <p>{work.summary}</p>
+                <div className="tags">{work.keywords.map(keyword => <span key={keyword}>{keyword}</span>)}</div>
+              </article>
             ))}
           </div>
         </section>

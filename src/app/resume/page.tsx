@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { portfolio as p } from "@/data/portfolio";
 import { PrintButton } from "@/components/print-button";
+import { ResultText } from "@/components/result-text";
 
 export const metadata: Metadata = { title: `${p.name} · 在线简历` };
 
@@ -31,7 +32,7 @@ export default function Resume() {
             <article className="resume-job" key={job.id}>
               <div className="resume-entry-heading"><h3>{job.company} · {job.role}</h3><span>{job.period}</span></div>
               <p className="resume-context">{job.context}</p>
-              <ul>{job.resumePoints.map(point => <li key={point}>{point}</li>)}</ul>
+              <ul>{job.resumePoints.map(point => <li key={point}><ResultText text={point} /></li>)}</ul>
             </article>
           ))}
         </section>
