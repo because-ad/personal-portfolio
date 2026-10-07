@@ -28,17 +28,21 @@ Run `npm run start` after a successful build to serve the production output.
 
 In this Codex cloud environment, set `npm_config_cache=/workspace/.cache/npm` before npm commands because the default home cache is not writable. Runtime processes must be started again in new tasks.
 
-## 第一版作品集
+## V2 真实求职作品集
 
-首页包括个人介绍、工作经历、项目经历、核心能力、代表作品、教育经历和联系方式。所有个人资料集中在 `src/data/portfolio.ts`，示例内容明确标记为待替换，正式投递前请更新真实信息与成果。
+李明春的求职定位为业务运营、项目执行、商务协作及渠道与伙伴方向。V2 保留原有米白 / 灰绿视觉与响应式布局，更新三段真实工作经历、三个项目案例、四项工作成果、教育与联系方式。
 
-- `src/app/page.tsx`：首页信息架构。
-- `src/app/globals.css`：商务视觉、PC/手机响应式与打印样式。
-- `src/components/`：导航、标题和打印按钮。
-- `src/app/resume/page.tsx`：共用数据的简历页，通过“打印 / 保存为 PDF”下载。
-- `src/app/layout.tsx`：中文语言和搜索元信息。
+- `src/data/portfolio.ts`：所有个人资料、业务事实、案例、成果、首页标题和简历精简版内容。
+- `src/app/page.tsx`：首页、关键数据、案例背景 / 行动 / 结果及工作成果。
+- `src/app/globals.css`：原有视觉体系、真实内容长度适配、响应式和两页 A4 打印样式。
+- `src/app/resume/page.tsx`：在线简历，与首页共用统一资料。
+- `public/resume-li-mingchun.pdf`：由在线简历打印生成的中文两页 A4 PDF，供首页及在线简历直接下载。
+- `src/components/header.tsx`：桌面与移动端锚点导航。
+- `src/app/layout.tsx`：姓名与真实求职内容的页面元信息。
 
-`npm run typecheck` 执行独立 TypeScript 检查。项目详情和作品框架可以展开查看；作品附件等待真实文件，未填充虚构数据。简历目前通过浏览器保存 PDF，后续可替换为正式 PDF 文件下载。
+`npm run typecheck` 执行独立 TypeScript 检查。简历支持浏览器打印保存 PDF；打印时隐藏操作按钮，工作经历与项目按两页 A4 排版，使用支持中文的系统字体回退。PDF 下载文件是版本化的静态文件：后续更新资料后，须从 `/resume` 重新打印为 A4 PDF（关闭浏览器页眉页脚），替换 `public/resume-li-mingchun.pdf`，保证在线简历与下载文件一致。
+
+案例与经历保留“参与”“约”“累计接触预算量级”等事实限定。未提供入学年份和微信，不展示这些字段；工作成果没有虚构附件下载入口。
 
 生产构建采用 Next.js 官方 Webpack 模式，避免此云环境中 Turbopack CSS loader 的端口绑定限制。开发服务器仍使用 Turbopack。
 

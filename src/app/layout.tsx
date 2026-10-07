@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { portfolio } from "@/data/portfolio";
 
 export const metadata: Metadata = {
-  title: { default: "个人作品集 | 运营 · 商务 · 项目执行", template: "%s | 个人作品集" },
-  description: "个人求职作品集：工作与项目经历、核心能力、代表作品、教育经历与联系方式。",
+  title: { default: `${portfolio.name} | 业务运营 · 项目执行 · 商务协作`, template: `%s | ${portfolio.name}的作品集` },
+  description: portfolio.intro[0],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
