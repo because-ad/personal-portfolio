@@ -55,12 +55,8 @@ export default function ResumePrint() {
           <ul>{resume.project.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
         </section>
         <section aria-labelledby="huawei-capabilities">
-          <h2 id="huawei-capabilities">核心匹配能力</h2>
-          <dl className="huawei-resume-capabilities">
-            {resume.capabilities.map(capability => (
-              <div key={capability.title}><dt>{capability.title}</dt><dd>{capability.detail}</dd></div>
-            ))}
-          </dl>
+          <h2 id="huawei-capabilities">核心能力</h2>
+          <p className="huawei-resume-capabilities">{resume.capabilities.join("｜")}</p>
         </section>
         <section aria-labelledby="huawei-education">
           <h2 id="huawei-education">教育经历</h2>

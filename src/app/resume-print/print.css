@@ -22,9 +22,9 @@
 .huawei-resume-target { margin-top: 7px !important; font-size: 15px; font-weight: 650; }
 .huawei-resume-positioning { margin-top: 4px !important; font-size: 13px; color: #48594f; }
 .huawei-resume-contact { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px !important; font-size: 13px; }
-.huawei-resume section { margin-top: 12px; }
+.huawei-resume section { margin-top: 20px; }
 .huawei-resume h2 {
-  margin: 0 0 5px;
+  margin: 0 0 8px;
   padding-bottom: 3px;
   border-bottom: 1px solid #b9c4bb;
   color: #294b3c;
@@ -36,13 +36,10 @@
 .huawei-resume-entry { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .huawei-resume-entry h3 span { font-weight: 500; }
 .huawei-resume-entry time { flex-shrink: 0; font-size: 12px; color: #4b514d; }
-.huawei-resume-job + .huawei-resume-job { margin-top: 9px; }
-.huawei-resume ul { list-style: disc outside; margin: 4px 0 0; padding-left: 17px; }
-.huawei-resume li + li { margin-top: 3px; }
+.huawei-resume-job + .huawei-resume-job { margin-top: 16px; }
+.huawei-resume ul { list-style: disc outside; margin: 7px 0 0; padding-left: 17px; }
+.huawei-resume li + li { margin-top: 5px; }
 .huawei-resume strong { color: #202521; font-weight: 700; white-space: nowrap; }
-.huawei-resume-capabilities { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 16px; }
-.huawei-resume-capabilities dt { font-weight: 650; }
-.huawei-resume-capabilities dd { margin: 0; }
 .huawei-resume-qualification { margin-left: 16px; }
 @media (max-width: 820px) {
   .huawei-resume { margin: 16px; }
@@ -55,7 +52,6 @@
   .huawei-resume-controls .button { padding: 9px 11px; font-size: 12px; }
   .huawei-resume-entry { display: block; }
   .huawei-resume-entry time { display: block; margin-top: 2px; }
-  .huawei-resume-capabilities { grid-template-columns: 1fr; }
   .huawei-resume-qualification { display: block; margin-left: 0; }
 }
 @page huaweiResume { size: A4; margin: 13mm; }
@@ -74,18 +70,18 @@
   .huawei-resume h1 { font-size: 25px; }
   .huawei-resume-target { margin-top: 5px !important; font-size: 13px; }
   .huawei-resume-positioning, .huawei-resume-contact { font-size: 12px; }
-  .huawei-resume section { margin-top: 8px; }
-  .huawei-resume h2 { margin-bottom: 4px; padding-bottom: 2px; font-size: 14px; color: #111; border-color: #888; break-after: avoid; }
-  .huawei-resume h3 { font-size: 12px; break-after: avoid; }
+  .huawei-resume section { margin-top: 14px; }
+  .huawei-resume h2 { margin-bottom: 7px; padding-bottom: 2px; font-size: 14px; color: #111; border-color: #888; break-after: avoid; }
+  .huawei-resume h3 { font-size: 13px; break-after: avoid; }
+  .huawei-resume-entry h3 span { font-size: 12px; }
   .huawei-resume-entry { display: flex; }
   .huawei-resume-entry time { display: inline; margin: 0; font-size: 11px; color: #333; }
-  .huawei-resume-job + .huawei-resume-job { margin-top: 7px; }
-  .huawei-resume ul { margin-top: 3px; padding-left: 20px; }
-  .huawei-resume li + li { margin-top: 2px; }
+  .huawei-resume-job + .huawei-resume-job { margin-top: 12px; }
+  .huawei-resume ul { margin-top: 6px; padding-left: 20px; }
+  .huawei-resume li + li { margin-top: 4px; }
   .huawei-resume li { orphans: 2; widows: 2; break-inside: avoid; }
   .huawei-resume-job, .huawei-resume section { break-inside: avoid; }
-  .huawei-resume-capabilities { grid-template-columns: 1fr 1fr; gap: 3px 14px; }
-  .huawei-resume-capabilities dt, .huawei-resume-capabilities dd { display: block; }
+  .huawei-resume section[aria-labelledby="huawei-tools"] p { text-wrap: balance; }
   .huawei-resume-qualification { display: inline; margin-left: 14px; }
   .huawei-resume strong { color: #111; }
 }
