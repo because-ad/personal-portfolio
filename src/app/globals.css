@@ -3,7 +3,7 @@
 :root {
   --bg:#faf9f6;
   --ink:#202f2b;
-  --muted:#727971;
+  --muted:#555f54;
   --green:#244c3e;
   --line:#e2e4dc
 }
@@ -1388,4 +1388,19 @@ details[open] > summary .details-symbol {
     color: inherit;
     text-decoration: none;
   }
+}
+
+/* V2.1：HR 阅读优化，仅加强文字、数字与成果层级。 */
+.stat-number { font-weight: 650; font-size: 34px; }
+.project-outcome strong { font-weight: 600; }
+.job-highlights span { font-weight: 600; }
+.work-detail dl { margin: 0; }
+.work-detail dl > div { display: grid; grid-template-columns: 75px minmax(0, 1fr); gap: 16px; margin-top: 12px; }
+.work-detail dt { color: var(--green); font-weight: 600; }
+.work-detail dd { margin: 0; line-height: 1.9; }
+.work-list summary p { font-size: 12px; line-height: 1.8; }
+@media (max-width: 1000px) { .stat-number { font-size: 28px; } }
+@media (max-width: 760px) {
+  .stat-number { font-size: 26px; }
+  .work-detail dl > div { grid-template-columns: 60px minmax(0, 1fr); gap: 10px; }
 }

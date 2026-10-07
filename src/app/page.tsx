@@ -127,13 +127,13 @@ export default function Home() {
           <SectionHeading {...sections.work} />
           <div className="work-list">
             {p.works.map((work, index) => (
-              <details key={work.id}>
+              <details key={work.id} open>
                 <summary>
                   <span className="work-number">0{index + 1}</span>
                   <div><h3>{work.title}</h3><p>{work.summary}</p></div>
                   <span className="work-type">{work.type}</span><span className="work-open details-symbol" aria-hidden="true">＋</span>
                 </summary>
-                <div className="work-detail"><p>{work.detail}</p></div>
+                <div className="work-detail"><dl><div><dt>我的行动</dt><dd>{work.action}</dd></div><div><dt>结果</dt><dd>{work.result}</dd></div></dl></div>
               </details>
             ))}
           </div>
