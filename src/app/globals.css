@@ -3,7 +3,7 @@
 :root {
   --bg:#faf9f6;
   --ink:#202f2b;
-  --muted:#727971;
+  --muted:#5d645c;
   --green:#244c3e;
   --line:#e2e4dc
 }
@@ -1389,3 +1389,81 @@ details[open] > summary .details-symbol {
     text-decoration: none;
   }
 }
+
+/* HR 阅读版：保留配色与结构，扩大正文并整理成果层级。 */
+.hero-intro {
+  max-width: 500px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.hero-role { font-size: 15px; line-height: 1.7; }
+.body-copy { font-size: 16px; line-height: 1.8; }
+.about-summary { margin-top: 24px; }
+.job-summary, .job ul { font-size: 15px; line-height: 1.8; }
+.company, .job-date { font-size: 14px; }
+.job-date small { font-size: 12px; line-height: 1.7; color: var(--muted); }
+.stat-number { font-size: 36px; font-weight: 650; letter-spacing: -1px; }
+.principles h3 { font-size: 14px; line-height: 1.7; }
+.principles p { font-size: 12px; }
+.tags span { font-size: 12px; line-height: 1.6; }
+.job-highlights span { padding: 10px 12px; }
+.job-highlights strong { display: block; font-size: 15px; font-weight: 600; }
+.job-highlights small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+.project-content > p:not(.eyebrow), .case-detail p, .case-detail ul { font-size: 15px; line-height: 1.8; }
+.project-content .tags span { font-size: 12px; }
+.project-outcome small, .project-content summary { font-size: 13px; }
+.case-detail h4 { font-size: 14px; }
+.skills-grid h3 { font-size: 17px; }
+.skills-grid p { font-size: 15px; line-height: 1.8; }
+.skills-grid .skill-evidence p { font-size: 14px; color: var(--green); }
+.skills-grid small { font-size: 12px; line-height: 1.7; color: var(--muted); }
+.skill-evidence-label { display: block; margin-bottom: 10px; }
+.work-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.work-card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #f5f6ef;
+}
+.work-card .work-number { font-size: 14px; color: var(--green); }
+.work-card h3 { font-size: 19px; font-weight: 500; margin: 18px 0 12px; }
+.work-card p { font-size: 16px; line-height: 1.8; color: var(--muted); margin: 0 0 24px; }
+.work-card .tags { margin-top: auto; }
+.education p { font-size: 15px; line-height: 1.8; }
+.contact-top p { font-size: 15px; line-height: 1.8; color: #d6e0d2; }
+.contact-bottom { font-size: 14px; }
+.resume-page { max-width: 780px; }
+.resume-page p, .resume-page li { font-size: 15px; line-height: 1.8; }
+.resume-page li + li { margin-top: 8px; }
+.resume-page li strong { color: var(--green); font-weight: 600; }
+.resume-context, .resume-entry-heading span { font-size: 13px; }
+@media (max-width: 1000px) {
+  .stat-number { font-size: 32px; }
+  .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+}
+@media (max-width: 760px) {
+  .stat-number { font-size: clamp(26px, 7.5vw, 32px); }
+  .principles h3 { font-size: 13px; }
+  .hero-role { font-size: 14px; }
+  .work-cards { grid-template-columns: 1fr; gap: 18px; }
+  .work-card { padding: 24px; }
+  .skills-grid { grid-template-columns: 1fr; gap: 30px; }
+}
+@media print {
+  .resume-page { width: auto; max-width: none; }
+  .resume-page p, .resume-page li { font-size: 9pt; line-height: 1.6; }
+  .resume-page li + li { margin-top: 3pt; }
+  .resume-page li strong { color: #244c3e; }
+  .resume-page .resume-context { font-size: 8pt; }
+  .resume-entry-heading span { font-size: 9pt; }
+  .resume-page section { margin-top: 12pt; }
+  .resume-page h3 { margin-top: 8pt; }
+}
+.resume-page ul { list-style: disc; list-style-position: outside; }
+.resume-page li::marker { color: var(--green); }
