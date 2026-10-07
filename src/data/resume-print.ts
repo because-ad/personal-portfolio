@@ -6,6 +6,7 @@ export const huaweiResume = {
   city: "深圳",
   phone: "13089870312",
   email: "lim762252@gmail.com",
+  photo: { src: "/resume-li-mingchun-photo.png", width: 1086, height: 1448, alt: "李明春正式证件照" },
   pdf: {
     href: "/resume-li-mingchun-huawei.pdf",
     filename: "李明春-华为云服务伙伴支持专员-简历.pdf",
@@ -43,6 +44,6 @@ export const huaweiResume = {
   },
   capabilities: ["多方协同", "营销活动执行", "流程标准化", "新人培训", "目标拆解", "数据跟踪", "销售转化", "从0到1推进"],
   education: { school: "湖北工业大学工程技术学院", qualification: "生物工程｜本科" },
-  tools: "工具：Excel、Word、PowerPoint、飞书、Canva；能够使用 ChatGPT、Gemini、Grok 辅助资料研究、内容整理与方案输出。",
+  tools: "工具：Excel｜PowerPoint｜Word｜飞书｜Canva；能够使用 ChatGPT、Gemini、Grok 辅助资料研究、内容整理与方案输出。",
   preparation: "已系统学习云服务伙伴业务基础逻辑，了解销售伙伴、服务伙伴、解决方案伙伴等常见类型，并持续学习伙伴拓展、赋能与运营机制。",
 } as const;

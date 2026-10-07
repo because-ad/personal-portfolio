@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { PrintButton } from "@/components/print-button";
 import { huaweiResume as resume } from "@/data/resume-print";
 import "./print.css";
@@ -24,14 +25,25 @@ export default function ResumePrint() {
       </nav>
       <article className="huawei-resume-sheet" aria-label="华为云服务伙伴支持专员定向简历">
         <header className="huawei-resume-heading">
-          <h1>{resume.name}</h1>
-          <p className="huawei-resume-target">{resume.target}</p>
-          <p className="huawei-resume-positioning">{resume.positioning}</p>
-          <p className="huawei-resume-contact">
-            <span>{resume.city}</span><span aria-hidden="true">｜</span>
-            <a href={`tel:${resume.phone}`}>{resume.phone}</a><span aria-hidden="true">｜</span>
-            <a href={`mailto:${resume.email}`}>{resume.email}</a>
-          </p>
+          <div className="huawei-resume-personal">
+            <h1>{resume.name}</h1>
+            <p className="huawei-resume-target">{resume.target}</p>
+            <p className="huawei-resume-positioning">{resume.positioning}</p>
+            <p className="huawei-resume-contact">
+              <span>{resume.city}</span><span aria-hidden="true">｜</span>
+              <a href={`tel:${resume.phone}`}>{resume.phone}</a><span aria-hidden="true">｜</span>
+              <a href={`mailto:${resume.email}`}>{resume.email}</a>
+            </p>
+          </div>
+          <Image
+            className="huawei-resume-photo"
+            src={resume.photo.src}
+            alt={resume.photo.alt}
+            width={resume.photo.width}
+            height={resume.photo.height}
+            loading="eager"
+            unoptimized
+          />
         </header>
         <section aria-labelledby="huawei-summary">
           <h2 id="huawei-summary">个人概述</h2>
@@ -63,7 +75,10 @@ export default function ResumePrint() {
           <p><strong>{resume.education.school}</strong><span className="huawei-resume-qualification">{resume.education.qualification}</span></p>
         </section>
         <section aria-labelledby="huawei-tools">
-          <h2 id="huawei-tools">办公与 AI 工具</h2><p>{resume.tools}</p>
+          <h2 id="huawei-tools">办公与 AI 工具</h2>
+          <p>{resume.tools.split("；").map((line, index) => (
+            <span className="huawei-resume-tool-line" key={line}>{line}{index === 0 ? "；" : ""}</span>
+          ))}</p>
         </section>
         <section aria-labelledby="huawei-preparation">
           <h2 id="huawei-preparation">岗位知识准备</h2><p>{resume.preparation}</p>
