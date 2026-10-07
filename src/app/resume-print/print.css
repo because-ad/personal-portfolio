@@ -1,0 +1,101 @@
+/* Only the independent targeted resume uses these rules. Named @page keeps
+   the existing /resume print settings unchanged after client navigation. */
+.huawei-resume {
+  max-width: 210mm;
+  margin: 24px auto 48px;
+  color: #252b28;
+  font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.huawei-resume-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.huawei-resume-controls .button { font-size: 13px; padding: 10px 14px; }
+.huawei-resume-sheet { padding: 13mm; background: white; border: 1px solid #e2e4dc; }
+.huawei-resume-heading { display: flex; align-items: flex-start; gap: 24px; }
+.huawei-resume-personal { flex: 1; min-width: 0; }
+.huawei-resume-photo {
+  display: block;
+  flex-shrink: 0;
+  width: 28mm;
+  height: calc(28mm * 4 / 3);
+  object-fit: contain;
+  border: 0.5px solid #d7d9d7;
+}
+.huawei-resume h1 { margin: 0; font-size: 30px; line-height: 1.2; font-weight: 700; }
+.huawei-resume p { margin: 0; }
+.huawei-resume-target { margin-top: 7px !important; font-size: 16px; font-weight: 650; }
+.huawei-resume-positioning { margin-top: 4px !important; font-size: 13px; color: #48594f; }
+.huawei-resume-contact { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px !important; font-size: 13px; }
+.huawei-resume section { margin-top: 20px; }
+.huawei-resume h2 {
+  margin: 0 0 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #b9c4bb;
+  color: #294b3c;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.huawei-resume h3 { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.5; }
+.huawei-resume-entry { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.huawei-resume-entry h3 span { font-weight: 500; }
+.huawei-resume-entry time { flex-shrink: 0; font-size: 12px; color: #4b514d; }
+.huawei-resume-job + .huawei-resume-job { margin-top: 16px; }
+.huawei-resume ul { list-style: disc outside; margin: 7px 0 0; padding-left: 17px; }
+.huawei-resume li + li { margin-top: 5px; }
+.huawei-resume strong { color: #202521; font-weight: 700; white-space: nowrap; }
+.huawei-resume-qualification { margin-left: 16px; }
+.huawei-resume-tool-line { display: block; }
+@media (max-width: 820px) {
+  .huawei-resume { margin: 16px; }
+  .huawei-resume-sheet { padding: 28px; }
+}
+@media (max-width: 560px) {
+  .huawei-resume { margin: 12px; font-size: 14px; line-height: 1.65; }
+  .huawei-resume-sheet { padding: 22px 18px; }
+  .huawei-resume-controls { gap: 8px; }
+  .huawei-resume-controls .button { padding: 9px 11px; font-size: 12px; }
+  .huawei-resume-heading { flex-direction: column; gap: 16px; }
+  .huawei-resume-photo { align-self: flex-end; }
+  .huawei-resume-entry { display: block; }
+  .huawei-resume-entry time { display: block; margin-top: 2px; }
+  .huawei-resume-qualification { display: block; margin-left: 0; }
+}
+@page huaweiResume { size: A4; margin: 13mm; }
+@media print {
+  .huawei-resume {
+    page: huaweiResume;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    color: #111;
+    font-size: 9.8pt;
+    line-height: 1.4;
+  }
+  .huawei-resume-controls { display: none !important; }
+  .huawei-resume-sheet { padding: 0; border: 0; background: white; }
+  .huawei-resume-heading { flex-direction: row; gap: 6mm; }
+  .huawei-resume-photo { align-self: flex-start; }
+  .huawei-resume h1 { font-size: 22pt; }
+  .huawei-resume-target { margin-top: 5px !important; font-size: 11.5pt; }
+  .huawei-resume-positioning, .huawei-resume-contact { font-size: 9.5pt; }
+  .huawei-resume section { margin-top: 11px; }
+  .huawei-resume h2 { margin-bottom: 6px; padding-bottom: 2px; font-size: 12.5pt; color: #111; border-color: #888; break-after: avoid; }
+  .huawei-resume h3 { font-size: 10.5pt; break-after: avoid; }
+  .huawei-resume-entry h3 span { font-size: 10.5pt; }
+  .huawei-resume-entry { display: flex; }
+  .huawei-resume-entry time { display: inline; margin: 0; font-size: 9pt; color: #333; }
+  .huawei-resume-job + .huawei-resume-job { margin-top: 10px; }
+  .huawei-resume ul { margin-top: 6px; padding-left: 20px; }
+  .huawei-resume li + li { margin-top: 4px; }
+  .huawei-resume li { orphans: 2; widows: 2; break-inside: avoid; }
+  .huawei-resume-job, .huawei-resume section { break-inside: avoid; }
+  .huawei-resume-qualification { display: inline; margin-left: 14px; }
+  .huawei-resume strong { color: #111; }
+}
