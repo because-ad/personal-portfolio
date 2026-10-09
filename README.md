@@ -49,3 +49,32 @@ In this Codex cloud environment, set `npm_config_cache=/workspace/.cache/npm` be
 ## Codex Cloud 预览
 
 `npm run dev` 固定监听 `0.0.0.0:3000`；`npm run start` 采用相同监听配置。云环境的 localhost 只能用于环境内部检查，不能作为用户浏览器链接。浏览器访问需要平台提供的端口 3000 代理 / 转发地址。当前会话未提供端口转发或打开预览的工具，不能通过修改 Next.js 监听地址自动生成外部链接，也不能把内部 HTTP 200 当成外部预览验证通过。
+
+## Career Portfolio V2 — 职业能力作品集
+
+本次升级沿用 Next.js / App Router 和米白、灰绿商务风格，不新增运行依赖。
+
+- `src/data/career.ts`：新版 Hero、关键成果、四个案例、AI 工作流、工具使用层级、岗位迁移和 Why Me。
+- `src/data/portfolio.ts`：原有真实资料及综合简历数据，保留不变。
+- `src/data/resume-print.ts`：原有华为云伙伴支持定向 A4 简历数据，保留不变。
+- `src/app/page.tsx`、`src/app/career.css`：新版首页及作用于 `.career-site` 的样式，不改变原简历的打印规则。
+- `src/app/case-studies/[slug]/page.tsx`：静态生成四个案例页面，按背景、职责、问题、行动、结果、复盘及能力迁移阅读。
+- `src/components/career-ui.tsx`：共享页头页尾、案例卡片和 AI 工作流。
+- `src/app/demo/sales-pipeline/`、`src/components/sales-pipeline.tsx`、`src/data/sales-pipeline.ts`：前端销售流程模拟，包含阶段筛选、搜索、阶段修改、联动指标、漏斗及跟进建议。
+- `src/app/layout.tsx`、`src/app/sitemap.ts`、`src/app/robots.ts`：SEO、Open Graph、Twitter 分享、站点地图及爬虫配置。分享图片使用已有真实证件照。
+
+新增业务页面：
+
+- `/case-studies/activity-execution`
+- `/case-studies/sales-team`
+- `/case-studies/store-operations`
+- `/case-studies/ai-productivity`
+- `/demo/sales-pipeline`
+
+已有 `/resume`（综合经历，两页 A4）与 `/resume-print`（华为云伙伴支持定向，一页 A4）及两份 PDF 均继续可用，本次没有修改其正文或静态文件。
+
+真实口径：直播账号 **3 天约 300 → 500 粉，后续约 580 粉**，不是从 0 增长 500；招聘与带教总数 **5 名，其中 2 名后续表现优秀**；约 60 万元为**累计接触项目预算量级**；约 30 人为**跨公司项目协作团队**，非个人直属团队。本人已在本次升级中再次确认直播起点。
+
+Demo 的全部公司、联系人、金额和跟进时间均为模拟。概率按阶段固定为 10%、25%、50%、75%、100%；Pipeline 和 Weighted Pipeline 排除 Won。转化率是当前 Won 数量除以全量记录，漏斗按当前阶段累计推算，不表示真实历史。筛选只影响表格和当前建议，不改变全量指标。所有修改只保留在当前页面，不接后端、不存储客户数据、不调用 AI API。
+
+后续可补充（不影响当前运行）：可公开的 SOP 原始文档、活动方案或工作记录、AI 研究与人工修订前后示例、工具熟练程度的进一步说明。未提供的材料不生成虚假下载地址，也不新增未经确认的效率收益。
