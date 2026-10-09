@@ -1,6 +1,7 @@
 /* 新职业作品集样式：仅作用于 career-site，保留两份已有简历的屏幕与打印样式。 */
 .career-site {
   --career-panel: #f0f2eb;
+  --muted: #555c55;
 }
 .career-site :where(p, li) {
   overflow-wrap: anywhere;
@@ -30,6 +31,9 @@
   align-items: center;
   min-height: 44px;
   font-size: 13px;
+}
+.career-site :is(.desktop-nav, .mobile-nav) {
+  color: #5c645d;
 }
 .career-site .section-description {
   max-width: 340px;
@@ -66,9 +70,11 @@
   line-height: 1.65;
   margin: 0 0 12px;
 }
-.career-positioning span {
-  color: var(--green);
-  font-size: 19px;
+.career-tagline {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 12px 0;
 }
 .career-english {
   font-size: 11px;

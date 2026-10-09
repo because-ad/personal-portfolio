@@ -43,6 +43,8 @@ export type DemoLead = {
   contact: string;
   source: string;
   stage: Stage;
+  /** Demo 按顺序推进：保留进入过的最远阶段，回退不清除累计历程。 */
+  furthestStage: Stage;
   value: number;
   followUpDays: number;
   lastContactDays: number;
@@ -86,6 +88,7 @@ export const demoLeads: readonly DemoLead[] = records.map(
     contact: `模拟联系人 ${String.fromCharCode(65 + index)}`,
     source: `演示：${source}`,
     stage,
+    furthestStage: stage,
     value,
     followUpDays,
     lastContactDays,
@@ -150,6 +153,7 @@ export function pipelineMetrics(leads: readonly DemoLead[]) {
   const won = leads.filter((lead) => lead.stage === "won");
   return {
     pipelineValue: open.reduce((sum, lead) => sum + lead.value, 0),
+    wonValue: won.reduce((sum, lead) => sum + lead.value, 0),
     weightedValue: open.reduce(
       (sum, lead) =>
         sum + (lead.value * stageInfo(lead.stage).probability) / 100,
@@ -165,7 +169,8 @@ export function pipelineMetrics(leads: readonly DemoLead[]) {
     cumulative: stages.map(
       (_, i) =>
         leads.filter(
-          (lead) => stages.findIndex((stage) => stage.id === lead.stage) >= i,
+          (lead) =>
+            stages.findIndex((stage) => stage.id === lead.furthestStage) >= i,
         ).length,
     ),
   };

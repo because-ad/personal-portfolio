@@ -3,13 +3,12 @@ import { portfolio } from "./portfolio";
 /** 新作品集的求职表达；原简历资料独立保留，不自动改写已确认的 PDF。 */
 export const career = {
   siteUrl: "https://personal-portfolio-one-inky-35.vercel.app",
-  title: "李明春 | Business Development · Operations · AI-Native",
+  title: "李明春 | Business Development / B2B / Channel Operations",
   description:
     "李明春个人职业作品集，展示业务拓展、项目执行、门店运营、团队管理及 AI 应用相关经历。",
-  subtitle: "业务增长 · BD · 运营 · 项目执行",
-  secondary: "AI 原生工作能力",
-  english:
-    "Business Development / Operations / Project Execution / AI-Native Productivity",
+  subtitle: "业务拓展 · ToB业务 · 渠道运营",
+  tagline: "业务是方向，AI 是工作杠杆。",
+  english: "Business Development / B2B / Channel Operations",
   intro:
     "具备活动项目、销售推广、团队管理、门店运营和新人培训等一线业务经验，能够从业务目标出发完成任务拆解、流程设计与执行落地，并持续探索 AI 工具在业务、运营与效率提升中的实际应用。",
   aboutExperience:
@@ -563,7 +562,7 @@ export const caseStudies: readonly CaseStudy[] = [
         title: "可以迁移到什么能力",
         english: "TRANSFERABLE SKILLS",
         paragraphs: [
-          "业务与行业研究、资料结构化、SOP 与培训材料整理、方案表达、岗位学习及小型业务 Demo 实现。AI 是我的工作杠杆，职业目标仍然是业务、运营与项目执行。",
+          "业务与行业研究、资料结构化、SOP 与培训材料整理、方案表达、岗位学习及小型业务 Demo 实现。AI 是工作杠杆，职业方向是业务拓展、ToB 业务与渠道运营。",
         ],
       },
     ],
@@ -573,9 +572,9 @@ export const caseStudies: readonly CaseStudy[] = [
 export const careerNavigation = [
   { href: "/#projects", label: "项目案例" },
   { href: "/#experience", label: "职业经历" },
-  { href: "/#ai", label: "AI 能力" },
+  { href: "/#ai", label: "AI应用" },
   { href: "/#lab", label: "业务 Demo" },
-  { href: "/#roles", label: "岗位方向" },
+  { href: "/#resume", label: "简历" },
 ];
 
 /** 工作成果与案例按稳定 ID 关联，调整展示顺序不会改变链接。 */

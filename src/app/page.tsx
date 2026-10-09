@@ -34,14 +34,11 @@ export default function Home() {
             </p>
             <p className="eyebrow">CAREER PORTFOLIO / 李明春</p>
             <h1>{p.name}</h1>
-            <p className="career-positioning">
-              {career.subtitle}
-              <br />
-              <span>{career.secondary}</span>
-            </p>
+            <p className="career-positioning">{career.subtitle}</p>
             <p className="career-english" lang="en">
               {career.english}
             </p>
+            <p className="career-tagline">{career.tagline}</p>
             <p className="hero-intro">{career.intro}</p>
             <div className="actions">
               <a className="button primary" href="#projects">
@@ -52,7 +49,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="hero-secondary">
-              <a href="#ai">AI 能力 ↗</a>
+              <a href="#ai">AI应用 ↗</a>
               <a href="#contact">联系我 ↗</a>
               <span>
                 {p.location} · {p.travel}
@@ -61,16 +58,12 @@ export default function Home() {
           </div>
           <aside className="career-hero-note" aria-label="职业能力主线">
             <p className="eyebrow">EXPERIENCE INTO CAPABILITY</p>
-            <h2>
-              从一线实践，
-              <br />
-              积累可迁移的能力。
-            </h2>
+            <h2>从一线销售、项目执行和门店运营中，形成可复用的业务方法。</h2>
             <ol>
               {[
                 { title: "销售", text: "理解需求与成交过程" },
                 { title: "项目", text: "协调资源，推进现场交付" },
-                { title: "运营", text: "把服务流程整理成 SOP" },
+                { title: "运营", text: "把服务经验沉淀成 SOP" },
               ].map((item, index) => (
                 <li key={item.title}>
                   <span>0{index + 1}</span>
@@ -81,7 +74,6 @@ export default function Home() {
                 </li>
               ))}
             </ol>
-            <p className="hero-note-bottom">业务是方向，AI 是工作杠杆。</p>
           </aside>
         </section>
 

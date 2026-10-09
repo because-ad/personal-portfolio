@@ -45,7 +45,23 @@ export function SalesPipeline() {
   function updateStage(id: string, stage: Stage) {
     const lead = leads.find((item) => item.id === id)!;
     setLeads((items) =>
-      items.map((item) => (item.id === id ? { ...item, stage } : item)),
+      items.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              stage,
+              furthestStage:
+                stages[
+                  Math.max(
+                    stages.findIndex(
+                      (entry) => entry.id === item.furthestStage,
+                    ),
+                    stages.findIndex((entry) => entry.id === stage),
+                  )
+                ].id,
+            }
+          : item,
+      ),
     );
     setAnnouncement(
       `${lead.company}已更新为${stageInfo(stage).chinese}，全量指标与下一步建议已重新计算。`,
@@ -76,39 +92,57 @@ export function SalesPipeline() {
           重置演示
         </button>
       </div>
-      <div className="pipeline-stage-grid" aria-label="按当前阶段筛选">
-        {stages.map((stage, i) => (
-          <button
-            type="button"
-            key={stage.id}
-            aria-pressed={filter === stage.id}
-            onClick={() =>
-              setFilter((value) => (value === stage.id ? "all" : stage.id))
-            }
-          >
-            <span>{stage.label}</span>
-            <strong>{metrics.counts[i]}</strong>
-            <small>{stage.chinese}</small>
-          </button>
-        ))}
-      </div>
-      <dl className="pipeline-kpis">
+      <section
+        className="pipeline-distribution"
+        aria-labelledby="distribution-heading"
+      >
+        <h2 id="distribution-heading">Current Stage Distribution</h2>
+        <p className="pipeline-caption">
+          当前阶段分布：每家模拟客户只计入当前所在阶段，合计 {leads.length}{" "}
+          家。点击阶段可筛选客户。
+        </p>
+        <div className="pipeline-stage-grid" aria-label="按当前阶段筛选">
+          {stages.map((stage, i) => (
+            <button
+              type="button"
+              key={stage.id}
+              aria-pressed={filter === stage.id}
+              onClick={() =>
+                setFilter((value) => (value === stage.id ? "all" : stage.id))
+              }
+            >
+              <span>{stage.label}</span>
+              <strong>{metrics.counts[i]}</strong>
+              <small>{stage.chinese}</small>
+            </button>
+          ))}
+        </div>
+      </section>
+      <dl
+        className="pipeline-kpis"
+        aria-label="Demo Data / 模拟金额、转化与跟进指标"
+      >
         <div>
-          <dt>Total Pipeline</dt>
+          <dt>Open Pipeline</dt>
           <dd data-testid="pipeline-value">{money(metrics.pipelineValue)}</dd>
-          <p>未成交记录的估算金额之和</p>
+          <p>当前未成交机会的模拟金额，包含 Leads 至 Proposal</p>
         </div>
         <div>
           <dt>Weighted Pipeline</dt>
           <dd data-testid="weighted-value">{money(metrics.weightedValue)}</dd>
-          <p>未成交金额 × 所在阶段的模拟概率</p>
+          <p>Σ Deal Value × Probability，仅计算未成交机会</p>
         </div>
         <div>
-          <dt>Win Rate</dt>
+          <dt>Won Value</dt>
+          <dd data-testid="won-value">{money(metrics.wonValue)}</dd>
+          <p>当前已成交模拟金额，不计入 Open / Weighted Pipeline</p>
+        </div>
+        <div>
+          <dt>Lead → Won Conversion</dt>
           <dd data-testid="conversion-rate">
             {metrics.conversionRate.toFixed(1)}%
           </dd>
-          <p>当前已成交记录 ÷ 全部模拟记录</p>
+          <p>线索至成交模拟转化率：当前 Won ÷ 全部模拟线索</p>
         </div>
         <div>
           <dt>Next Follow-ups</dt>
@@ -119,10 +153,12 @@ export function SalesPipeline() {
       <div className="pipeline-analysis-grid">
         <section className="pipeline-panel">
           <h2>
-            销售漏斗 <span className="pipeline-data-label">模拟值</span>
+            Stage Progression{" "}
+            <span className="pipeline-data-label">模拟值</span>
           </h2>
           <p className="pipeline-caption">
-            累计到达各阶段的数量，按当前阶段推算；并非真实历史转化记录。
+            阶段转化漏斗：累计进入过各阶段的模拟客户数，同一客户可计入多个阶段。Demo
+            按顺序推进，回退保留已到达阶段，因此不同于当前阶段分布。
           </p>
           <ol className="pipeline-funnel">
             {stages.map((stage, i) => (
@@ -402,9 +438,15 @@ export function SalesPipeline() {
           权限、真实历史转化、合同或收入确认。
         </p>
         <p>
-          概率为固定演示值：10%、25%、50%、75%、100%。Pipeline 及 Weighted
-          Pipeline 排除已成交记录，成交率为当前已成交数量 /
-          全量记录数。漏斗数量采用当前阶段顺序累计推算，不能据此推断真实流失率。
+          概率为固定演示值：10%、25%、50%、75%、100%。Open Pipeline
+          为当前未成交机会金额之和；Weighted Pipeline 为未成交机会的 Σ Deal
+          Value × Probability；两者均排除 Won。Won Value
+          单独汇总当前成交模拟金额。Lead → Won Conversion = 当前 Won 数量 /
+          全部模拟线索数量。
+        </p>
+        <p>
+          Current Stage Distribution 只统计当前阶段。Stage Progression
+          使用模拟推进历程：初始数据按顺序进入前序阶段，演示跳级也视为经过前序阶段；回退不会清除已进入过的阶段。漏斗为累计人数，不是当前阶段人数，也不代表真实客户历史或流失率。
         </p>
         <p>
           全部日期相对演示日计算；未成交记录 7

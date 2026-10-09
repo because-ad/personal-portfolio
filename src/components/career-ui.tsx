@@ -16,7 +16,6 @@ export function CareerShell({ children }: { children: ReactNode }) {
         mobileItems={[
           ...careerNavigation,
           { href: "/#about", label: "关于与教育" },
-          { href: "/#resume", label: "简历下载" },
           { href: "/#contact", label: "联系我" },
         ]}
       />
