@@ -1,10 +1,37 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { portfolio } from "@/data/portfolio";
+import { career } from "@/data/career";
 
 export const metadata: Metadata = {
-  title: { default: `${portfolio.name} | 业务运营 · 项目执行 · 商务协作`, template: `%s | ${portfolio.name}的作品集` },
-  description: portfolio.intro[0],
+  metadataBase: new URL(career.siteUrl),
+  title: {
+    default: career.title,
+    template: `%s | ${portfolio.name}的职业作品集`,
+  },
+  description: career.description,
+  openGraph: {
+    type: "website",
+    locale: "zh_CN",
+    siteName: "Career Portfolio V2 — 李明春",
+    title: career.title,
+    description: career.description,
+    url: "/",
+    images: [
+      {
+        url: "/resume-li-mingchun-photo.png",
+        width: 1086,
+        height: 1448,
+        alt: "李明春正式证件照",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: career.title,
+    description: career.description,
+    images: ["/resume-li-mingchun-photo.png"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
