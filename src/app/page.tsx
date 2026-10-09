@@ -206,6 +206,35 @@ export default function Home() {
               ))}
             </ol>
           </article>
+          <article className="career-lab-card career-channel-entry">
+            <div>
+              <p className="eyebrow">02 / Channel Partner Growth</p>
+              <span className="demo-badge">Simulation / 模拟项目</span>
+              <h3>B2B Channel Partner Growth</h3>
+              <p>
+                从伙伴招募、筛选、赋能到商机协同，模拟完整渠道伙伴生命周期。
+              </p>
+              <div className="tags">
+                {["Simulation", "Channel", "Partner", "B2B"].map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+              <Link
+                className="button primary"
+                href="/demo/channel-partner-growth"
+              >
+                查看模拟项目 ↗
+              </Link>
+            </div>
+            <div className="career-channel-entry-note">
+              <p className="eyebrow">BUSINESS FRAMEWORK / 模拟框架</p>
+              <h4>选对伙伴，支持首个商机。</h4>
+              <p>
+                18 家虚构伙伴，展示评分、分层、培训、激活、商机协同与风险判断。
+              </p>
+              <p>全部企业与业绩数据均为模拟，不代表真实渠道从业经历。</p>
+            </div>
+          </article>
         </section>
 
         <section id="roles" className="section container">

@@ -498,6 +498,23 @@
   background: #f4f5ef;
   border-radius: 4px;
 }
+.career-channel-entry {
+  margin-top: 24px;
+}
+.career-channel-entry .tags {
+  margin-bottom: 24px;
+}
+.career-channel-entry-note {
+  align-self: center;
+}
+.career-channel-entry-note h4 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 14px 0;
+}
+.career-channel-entry-note p {
+  font-size: 14px;
+}
 .demo-badge {
   display: inline-flex;
   background: #e4eadd;
