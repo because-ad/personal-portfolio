@@ -239,6 +239,90 @@
 .partner-metric-grid p {
   font-size: 12px;
 }
+.partner-win-outcomes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.partner-win-outcomes strong {
+  color: var(--green);
+  margin-left: 4px;
+}
+.partner-funnel-layout {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 24px;
+  margin: 16px 0;
+}
+.partner-activation-funnel {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.partner-activation-funnel li {
+  position: relative;
+  padding: 12px 0;
+  min-width: 0;
+}
+.partner-activation-funnel li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -17px;
+  top: 22px;
+  color: var(--green);
+}
+.partner-activation-funnel :is(strong, span, small),
+.partner-active-snapshot :is(strong, span, small) {
+  display: block;
+}
+.partner-activation-funnel strong,
+.partner-active-snapshot > strong {
+  font-size: 26px;
+  color: var(--green);
+}
+.partner-activation-funnel span,
+.partner-active-snapshot span {
+  font-size: 12px;
+}
+.partner-activation-funnel small,
+.partner-active-snapshot small {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.partner-active-snapshot {
+  border-left: 1px solid #cfd8c6;
+  padding: 12px 0 12px 20px;
+}
+.partner-activation .partner-funnel-note {
+  font-size: 12px;
+  margin: 0 0 22px;
+}
+.partner-page .partner-score-total {
+  font-size: 14px;
+  margin-top: 18px;
+  color: var(--green);
+}
+.partner-action-execution {
+  display: grid;
+  gap: 12px;
+  border-block: 1px solid #cfd8c6;
+  padding: 16px 0;
+  margin-top: 16px !important;
+}
+.partner-action-execution dt {
+  font-size: 11px;
+  font-weight: 600;
+}
+.partner-action-execution dd {
+  font-size: 13px;
+  margin-top: 4px;
+}
 .partner-activation {
   background: var(--career-panel);
   padding: 22px;
@@ -417,6 +501,9 @@
 .partner-score-grid dd {
   font-size: 14px;
   margin-top: 6px;
+}
+.partner-score-grid strong {
+  white-space: nowrap;
 }
 .partner-decision-grid {
   display: grid;
@@ -637,6 +724,38 @@
   }
 }
 @media (max-width: 760px) {
+  .partner-funnel-layout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .partner-activation-funnel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 24px;
+  }
+  .partner-activation-funnel li:nth-child(2)::after {
+    content: "↓";
+    top: auto;
+    bottom: -16px;
+    right: 50%;
+  }
+  .partner-activation-funnel li:nth-child(3) {
+    grid-row: 2;
+    grid-column: 2;
+  }
+  .partner-activation-funnel li:nth-child(4) {
+    grid-row: 2;
+    grid-column: 1;
+  }
+  .partner-activation-funnel li:nth-child(3)::after {
+    content: "←";
+    right: auto;
+    left: -17px;
+  }
+  .partner-active-snapshot {
+    border-left: 0;
+    border-top: 1px solid #cfd8c6;
+    padding: 16px 0 0;
+  }
   .partner-page {
     padding-top: 20px;
   }

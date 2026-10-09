@@ -202,8 +202,9 @@ export default function ChannelPartnerGrowthPage() {
             <span className="demo-badge">模拟标准 / 非企业内部标准</span>
           </div>
           <p className="partner-formula">
-            总分 100 = Σ（维度评分 ÷ 5 × 权重）。各维度按 0—5 分模拟评估，0
-            为未具备 / 无依据，5 为强匹配；总分保留一位小数。
+            Contribution = Rating / 5 × Weight；Qualification Score = Σ
+            Contribution，满分 100。Rating 是 0—5 分原始评估，Weight
+            是模拟权重（计算使用百分数点值，如 20），Contribution 是加权贡献分。
           </p>
           <div className="partner-weight-grid">
             {qualificationDimensions.map((dimension) => (
@@ -212,16 +213,18 @@ export default function ChannelPartnerGrowthPage() {
                   <h3>{dimension.label}</h3>
                   <strong>
                     {dimension.weight}
-                    <small> / 100</small>
+                    <small>%</small>
                   </strong>
                 </div>
-                <p lang="en">{dimension.english}</p>
+                <p lang="en">{dimension.english} · Weight / 权重</p>
                 <p>{dimension.evidence}</p>
               </article>
             ))}
           </div>
           <p className="partner-note">
-            评分需要证据支撑。本页的评分输入也是虚构值，用于演示判断方法；真实合作还需访谈、能力核查与阶段验证。
+            上方百分比只表示权重，不是伙伴实际得分。各伙伴详情单独展示
+            Rating、Weight 和 Contribution；例如客户基础 Rating 4 / 5、Weight
+            20%，对应贡献 16 / 20。评分输入也是虚构值，不是企业内部标准。
           </p>
         </section>
 

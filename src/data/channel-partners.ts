@@ -183,7 +183,7 @@ export const partnerTiers = [
     id: "inactive",
     english: "Inactive",
     label: "低活跃伙伴",
-    rule: "超过 30 天无活动，或投入意愿 ≤ 1，或处于退出阶段；优先适用。",
+    rule: "已进入运营阶段且超过 30 天无有效业务动作，或已入驻且投入意愿 ≤ 1，或处于退出阶段；优先适用。",
     resource: "先核查合作意愿与停滞原因，设置恢复观察期，再决定维持或退出。",
   },
 ] as const;
@@ -196,6 +196,7 @@ export type PartnerOpportunity = {
   source: "partner" | "vendor";
   daysSinceProgress: number;
   proposalSent: boolean;
+  stage: "opportunity" | "proposal" | "won" | "lost";
 };
 export type SimulatedPartner = {
   id: string;
@@ -208,6 +209,9 @@ export type SimulatedPartner = {
   signed: boolean;
   trainingPercent: number;
   daysSinceActivity: number;
+  /** 相对于固定演示快照的时钟，非真实日期。未入驻 / 未完成培训时为 null。 */
+  daysSinceOnboarding: number | null;
+  daysSinceTrainingCompleted: number | null;
   owner: string;
   opportunities: readonly PartnerOpportunity[];
 };
@@ -472,6 +476,28 @@ const opportunitySeeds: Readonly<
     [50000, "won", "partner", 0, true],
   ],
 };
+/** 各伙伴的模拟入驻 / 关键培训完成时钟；与上方伙伴顺序一致。 */
+const timingSeeds: readonly [number | null, number | null][] = [
+  [24, null],
+  [60, 45],
+  [75, 60],
+  [40, 25],
+  [90, 72],
+  [10, null],
+  [20, 8],
+  [50, 35],
+  [5, null],
+  [24, null],
+  [null, null],
+  [null, null],
+  [80, 65],
+  [65, null],
+  [95, 75],
+  [null, null],
+  [55, 40],
+  [70, 50],
+];
+
 export const simulatedPartners: readonly SimulatedPartner[] = seeds.map(
   (seed, index) => {
     const [
@@ -499,6 +525,8 @@ export const simulatedPartners: readonly SimulatedPartner[] = seeds.map(
       signed,
       trainingPercent,
       daysSinceActivity,
+      daysSinceOnboarding: timingSeeds[index][0],
+      daysSinceTrainingCompleted: timingSeeds[index][1],
       owner: `模拟负责人 ${["A", "B", "C"][index % 3]}`,
       opportunities: (opportunitySeeds[index] ?? []).map(
         ([value, status, source, daysSinceProgress, proposalSent], i) => ({
@@ -508,18 +536,30 @@ export const simulatedPartners: readonly SimulatedPartner[] = seeds.map(
           source,
           daysSinceProgress,
           proposalSent,
+          stage:
+            status === "open"
+              ? proposalSent
+                ? "proposal"
+                : "opportunity"
+              : status,
         }),
       ),
     };
   },
 );
 
+export function qualificationBreakdown(partner: SimulatedPartner) {
+  return qualificationDimensions.map((dimension) => ({
+    ...dimension,
+    rating: partner.ratings[dimension.id],
+    contribution: (partner.ratings[dimension.id] / 5) * dimension.weight,
+  }));
+}
 export function qualificationScore(partner: SimulatedPartner) {
   return (
     Math.round(
-      qualificationDimensions.reduce(
-        (sum, dimension) =>
-          sum + (partner.ratings[dimension.id] / 5) * dimension.weight,
+      qualificationBreakdown(partner).reduce(
+        (sum, dimension) => sum + dimension.contribution,
         0,
       ) * 10,
     ) / 10
@@ -538,8 +578,9 @@ export function partnerPipeline(partner: SimulatedPartner) {
 }
 export function partnerTier(partner: SimulatedPartner): PartnerTier {
   if (
-    partner.daysSinceActivity > 30 ||
-    partner.ratings.commitment <= 1 ||
+    (isOperationalPartner(partner) &&
+      partner.daysSinceActivity > partnerRiskPolicy.activityIdleDays) ||
+    (partner.signed && partner.ratings.commitment <= 1) ||
     partner.stage === "exit"
   )
     return "inactive";
@@ -564,47 +605,68 @@ export const isActivePartner = (partner: SimulatedPartner) =>
 export const isActivatedPartner = (partner: SimulatedPartner) =>
   partner.signed && partner.opportunities.length > 0;
 
+export const partnerRiskPolicy = {
+  trainingTargetDays: 14,
+  firstOpportunityTargetDays: 14,
+  activityIdleDays: 30,
+  opportunityIdleDays: 21,
+} as const;
+const operationalStages: readonly PartnerStage[] = [
+  "activation",
+  "coselling",
+  "review",
+  "grow",
+  "maintain",
+];
+export const isOperationalPartner = (partner: SimulatedPartner) =>
+  partner.signed && operationalStages.includes(partner.stage);
+const isManagedPartner = (partner: SimulatedPartner) =>
+  partner.signed &&
+  (isOperationalPartner(partner) ||
+    partner.stage === "onboarding" ||
+    partner.stage === "enablement");
+
 export const partnerRisks = [
   {
     id: "noActivity",
     english: "No Activity",
     label: "长期无活动",
-    rule: "超过 30 天没有模拟活动",
+    rule: `已签约并进入 Activation / Co-selling / Review / Grow / Maintain，超过 ${partnerRiskPolicy.activityIdleDays} 天没有有效业务动作`,
     handling: "核查合作意愿与障碍，约定恢复动作和观察期限。",
   },
   {
     id: "noOpportunities",
     english: "No Opportunities",
     label: "没有商机",
-    rule: "已签约但未产生首个模拟商机",
+    rule: `已进入运营阶段、完成关键培训后超过 ${partnerRiskPolicy.firstOpportunityTargetDays} 天，仍未产生首个有效商机`,
     handling: "与伙伴识别目标客户，安排小范围联合需求访谈。",
   },
   {
     id: "lowCommitment",
     english: "Low Commitment",
     label: "投入意愿低",
-    rule: "投入意愿评分 ≤ 2 / 5",
+    rule: "已入驻且未退出，投入意愿评分 ≤ 2 / 5",
     handling: "确认负责人、时间与产品优先级，暂缓扩大资源投入。",
   },
   {
     id: "trainingIncomplete",
     english: "Training Incomplete",
     label: "培训未完成",
-    rule: "已签约且培训完成度低于 100%",
+    rule: `已进入 Onboarding / Enablement 或后续运营阶段，入驻后超过 ${partnerRiskPolicy.trainingTargetDays} 天仍未完成关键培训（100%）`,
     handling: "按伙伴类型补齐产品、销售或行业方案培训。",
   },
   {
     id: "pipelineStalled",
     english: "Pipeline Stalled",
     label: "商机停滞",
-    rule: "未关闭商机超过 21 天无推进",
+    rule: `运营阶段伙伴的未关闭商机已进入 Opportunity / Proposal，超过 ${partnerRiskPolicy.opportunityIdleDays} 天无推进`,
     handling: "核查客户需求、决策链与方案阻碍，确认下一次推进节点。",
   },
   {
     id: "highDependency",
     english: "High Dependency",
     label: "过度依赖厂商",
-    rule: "厂商分配的开放金额占比 ≥ 70%",
+    rule: "运营阶段伙伴有开放商机，且厂商分配的开放金额占比 ≥ 70%",
     handling: "帮助伙伴建立自主获客与需求识别动作，逐步减少依赖。",
   },
 ] as const;
@@ -615,36 +677,82 @@ export function risksForPartner(partner: SimulatedPartner) {
     .filter((opportunity) => opportunity.source === "vendor")
     .reduce((sum, opportunity) => sum + opportunity.value, 0);
   const flags = {
-    noActivity: partner.daysSinceActivity > 30,
-    noOpportunities: partner.signed && partner.opportunities.length === 0,
-    lowCommitment: partner.ratings.commitment <= 2,
-    trainingIncomplete: partner.signed && partner.trainingPercent < 100,
-    pipelineStalled: open.some(
-      (opportunity) => opportunity.daysSinceProgress > 21,
-    ),
-    highDependency: value > 0 && vendorValue / value >= 0.7,
+    noActivity:
+      isOperationalPartner(partner) &&
+      partner.daysSinceActivity > partnerRiskPolicy.activityIdleDays,
+    noOpportunities:
+      isOperationalPartner(partner) &&
+      partner.trainingPercent === 100 &&
+      partner.daysSinceTrainingCompleted !== null &&
+      partner.daysSinceTrainingCompleted >
+        partnerRiskPolicy.firstOpportunityTargetDays &&
+      partner.opportunities.length === 0,
+    lowCommitment: isManagedPartner(partner) && partner.ratings.commitment <= 2,
+    trainingIncomplete:
+      isManagedPartner(partner) &&
+      partner.daysSinceOnboarding !== null &&
+      partner.daysSinceOnboarding > partnerRiskPolicy.trainingTargetDays &&
+      partner.trainingPercent < 100,
+    pipelineStalled:
+      isOperationalPartner(partner) &&
+      open.some(
+        (opportunity) =>
+          (opportunity.stage === "opportunity" ||
+            opportunity.stage === "proposal") &&
+          opportunity.daysSinceProgress > partnerRiskPolicy.opportunityIdleDays,
+      ),
+    highDependency:
+      isOperationalPartner(partner) && value > 0 && vendorValue / value >= 0.7,
   };
   return partnerRisks.filter((risk) => flags[risk.id]);
 }
 export function partnerNextAction(partner: SimulatedPartner) {
+  const owner = `Partner Manager / 渠道负责人（模拟），协同${partner.owner}`;
   if (partnerTier(partner) === "inactive")
     return {
       short: "复核合作意愿与恢复计划",
       action:
         "联系模拟负责人，核查长期无活动或低投入原因，约定恢复动作与观察期；退出伙伴先核对交接安排。",
       why: "低活跃可能来自优先级或合作条件变化。先确认是否仍值得投入，再决定恢复、维持或退出，避免直接按标签淘汰。",
+      owner,
+      dueDays: 7,
+      successCriteria:
+        "记录合作意愿、阻碍与资源安排，形成一项恢复、维持或退出决定及对应交接计划。",
     };
   if (!partner.signed)
     return {
       short: "核查匹配与合作投入",
       action: `核查${partner.industry}客户结构、目标场景与负责人投入，补齐评分依据后再决定是否入驻。`,
       why: "候选伙伴尚未签约，评分只是模拟判断工具。先核查双方能否共同服务目标客户，比直接安排大量培训更合适。",
+      owner,
+      dueDays: 7,
+      successCriteria:
+        "补齐六维评估依据，确认合作负责人及投入计划，记录是否进入入驻阶段的判断。",
     };
   if (partner.trainingPercent < 100)
     return {
-      short: "补齐行业方案与销售培训",
+      short: risksForPartner(partner).some(
+        (risk) => risk.id === "trainingIncomplete",
+      )
+        ? "补齐逾期关键培训"
+        : "安排行业方案与销售培训",
       action: `围绕${partner.industry}安排${partnerTypeInfo(partner.type).label}适用的产品 / 方案培训，与伙伴选择 2—3 个模拟目标客户场景进行联合机会识别。`,
-      why: `伙伴已有${partner.industry}方向资源，但培训完成度仅 ${partner.trainingPercent}%。先帮助其理解产品与客户匹配关系，再要求扩大商机报备，更有利于形成有效机会。`,
+      why: `伙伴已有${partner.industry}方向资源，培训完成度为 ${partner.trainingPercent}%。${partner.daysSinceOnboarding !== null && partner.daysSinceOnboarding > partnerRiskPolicy.trainingTargetDays ? `入驻已 ${partner.daysSinceOnboarding} 天，超过 ${partnerRiskPolicy.trainingTargetDays} 天目标周期，需要补齐关键培训。` : `仍处于 ${partnerRiskPolicy.trainingTargetDays} 天目标周期内，先按计划完成培训，不判为逾期风险。`}先理解产品与客户匹配关系，再扩大商机报备。`,
+      owner,
+      dueDays:
+        partner.daysSinceOnboarding === null ||
+        partner.daysSinceOnboarding > partnerRiskPolicy.trainingTargetDays
+          ? 7
+          : Math.max(
+              1,
+              Math.min(
+                7,
+                partnerRiskPolicy.trainingTargetDays -
+                  partner.daysSinceOnboarding,
+              ),
+            ),
+      successCriteria:
+        "完成关键培训及场景演练，识别 2—3 个可进一步验证的模拟目标客户场景。",
     };
   if (partner.opportunities.length === 0)
     return {
@@ -652,6 +760,10 @@ export function partnerNextAction(partner: SimulatedPartner) {
       action:
         "从现有客户结构中筛选匹配场景，安排联合需求访谈，记录联系人、场景与下一步推进计划。",
       why: "签约和完成培训还不等于激活。以首个经过需求判断的模拟商机检验合作是否真正运转。",
+      owner,
+      dueDays: 7,
+      successCriteria:
+        "识别 2—3 个匹配的模拟目标客户，至少形成一条含需求判断、联系人和下一步计划的有效商机记录。",
     };
   if (risksForPartner(partner).some((risk) => risk.id === "pipelineStalled"))
     return {
@@ -659,6 +771,10 @@ export function partnerNextAction(partner: SimulatedPartner) {
       action:
         "核查长期未推进的模拟机会，确认需求、决策人、方案阻碍与时间窗口，并约定下一次沟通。",
       why: "伙伴仍有商机，但开放金额不等于可成交收入。先确认停滞机会是否有效，再安排售前或营销资源。",
+      owner,
+      dueDays: 3,
+      successCriteria:
+        "逐条核查停滞机会，记录继续推进或关闭的判断，为有效机会确定负责人及下一次沟通时间。",
     };
   if (risksForPartner(partner).some((risk) => risk.id === "highDependency"))
     return {
@@ -666,6 +782,10 @@ export function partnerNextAction(partner: SimulatedPartner) {
       action:
         "共同梳理目标客户画像，安排伙伴自主客户访谈，复核自主来源与厂商分配商机的占比。",
       why: "开放金额主要来自厂商分配，当前合作对厂商获客依赖较高。支持伙伴建立自主获客能力，比持续分配线索更有利于可持续增长。",
+      owner,
+      dueDays: 7,
+      successCriteria:
+        "梳理 2—3 个自主来源模拟目标客户场景，完成至少一次联合需求访谈并记录来源与判断。",
     };
   if (partner.opportunities.some((opportunity) => opportunity.status === "won"))
     return {
@@ -673,12 +793,20 @@ export function partnerNextAction(partner: SimulatedPartner) {
       action:
         "复盘模拟成交的需求、方案和推进条件，整理可复制的场景，再与伙伴筛选下一批匹配客户。",
       why: "已有模拟首单，可以从实际推进条件中找出可复用方法。复制场景仍需要核查新客户条件，不能直接假定相同成交结果。",
+      owner,
+      dueDays: 7,
+      successCriteria:
+        "完成一份模拟首单复盘，列出可复制条件，并选择 2—3 个待验证客户场景。",
     };
   return {
     short: "联合推进现有商机",
     action:
       "按模拟客户需求与推进节点协调双方销售和售前支持，确认方案反馈及下一次行动。",
     why: "伙伴已经产生模拟商机，重点应转为机会质量与协同推进。资源投入随节点和反馈调整，而不是只看报备数量。",
+    owner,
+    dueDays: 7,
+    successCriteria:
+      "至少核查一个开放商机的需求与方案反馈，确定下一节点、负责人与时间，不承诺成交结果。",
   };
 }
 export function partnerDashboard(partners: readonly SimulatedPartner[]) {
@@ -703,9 +831,17 @@ export function partnerDashboard(partners: readonly SimulatedPartner[]) {
     openOpportunities: open.length,
     closed: closed.length,
     won: won.length,
+    lost: closed.length - won.length,
+    activeActivated: partners.filter(
+      (partner) => isActivePartner(partner) && isActivatedPartner(partner),
+    ).length,
     pipeline: open.reduce((sum, opportunity) => sum + opportunity.value, 0),
     activePipeline: open
-      .filter((opportunity) => opportunity.daysSinceProgress <= 21)
+      .filter(
+        (opportunity) =>
+          opportunity.daysSinceProgress <=
+          partnerRiskPolicy.opportunityIdleDays,
+      )
       .reduce((sum, opportunity) => sum + opportunity.value, 0),
     partnerSourced: open
       .filter((opportunity) => opportunity.source === "partner")

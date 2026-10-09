@@ -9,13 +9,14 @@ import {
   partnerNextAction,
   partnerOpenOpportunities,
   partnerPipeline,
+  partnerRiskPolicy,
   partnerStageLabel,
   partnerTier,
   partnerTierInfo,
   partnerTiers,
   partnerTypeInfo,
   partnerTypes,
-  qualificationDimensions,
+  qualificationBreakdown,
   qualificationScore,
   risksForPartner,
   simulatedPartners,
@@ -51,7 +52,7 @@ const dashboardMetrics = [
     english: "Partner Opportunities",
     label: "伙伴商机数",
     value: stats.opportunities,
-    definition: `${stats.openOpportunities} 个开放 + ${stats.won} 个成交 + ${stats.closed - stats.won} 个未成交；含两种来源。`,
+    definition: `${stats.openOpportunities} 个开放 + ${stats.won} 个成交 + ${stats.lost} 个未成交；含两种来源。`,
   },
   {
     english: "Open Pipeline",
@@ -69,8 +70,14 @@ const dashboardMetrics = [
     english: "Partner Win Rate",
     label: "已关闭商机胜率",
     value: stats.winRate === null ? "—" : `${stats.winRate.toFixed(1)}%`,
-    definition: `Won ÷ (Won + Lost) = ${stats.won} ÷ ${stats.closed}；未关闭商机不进分母。`,
+    definition: `Win Rate = Won / (Won + Lost) = ${stats.won} / (${stats.won} + ${stats.lost})；未关闭商机不进分母。`,
   },
+] as const;
+const activationFunnel = [
+  { label: "Total Partners", chinese: "全部伙伴", value: stats.total },
+  { label: "Signed", chinese: "已签约", value: stats.signed },
+  { label: "Activated", chinese: "曾产生首个商机", value: stats.activated },
+  { label: "First Deal", chinese: "曾完成首单", value: stats.firstDeal },
 ] as const;
 
 export function ChannelPartnerDemo() {
@@ -137,6 +144,19 @@ export function ChannelPartnerDemo() {
                 <span>{metric.label}</span>
               </dt>
               <dd>{metric.value}</dd>
+              {metric.english === "Partner Win Rate" && (
+                <div
+                  className="partner-win-outcomes"
+                  aria-label="模拟已关闭商机来源"
+                >
+                  <span>
+                    Won <strong>{stats.won}</strong>
+                  </span>
+                  <span>
+                    Lost <strong>{stats.lost}</strong>
+                  </span>
+                </div>
+              )}
               <p>{metric.definition}</p>
             </div>
           ))}
@@ -147,6 +167,35 @@ export function ChannelPartnerDemo() {
             已签约 <strong>{stats.signed}</strong> 家，曾产生首个有效商机{" "}
             <strong>{stats.activated}</strong>{" "}
             家。已激活是历史里程碑；活跃是近期活动状态，两者不互相替代。
+          </p>
+          <h4>Activation Funnel / 历史激活漏斗 · 模拟</h4>
+          <div className="partner-funnel-layout">
+            <ol
+              className="partner-activation-funnel"
+              aria-label="历史伙伴转化漏斗"
+            >
+              {activationFunnel.map((step) => (
+                <li key={step.label}>
+                  <strong>{step.value}</strong>
+                  <span lang="en">{step.label}</span>
+                  <small>{step.chinese}</small>
+                </li>
+              ))}
+            </ol>
+            <div className="partner-active-snapshot">
+              <strong>{stats.active}</strong>
+              <span>Active / 当前周期活跃</span>
+              <small>
+                其中 {stats.activeActivated} 家已激活，
+                {stats.active - stats.activeActivated} 家仍在入驻 / 培训。
+              </small>
+            </div>
+          </div>
+          <p className="partner-funnel-note">
+            Activated = 历史业务激活里程碑。Active =
+            当前周期仍保持业务活动（最近 14
+            天）。活跃包含培训期伙伴，历史首单也可能暂不活跃；因此 Active
+            作为旁侧快照，不插入历史漏斗。
           </p>
           <dl className="partner-activation-grid">
             <div>
@@ -371,6 +420,18 @@ export function ChannelPartnerDemo() {
                       ? "已完成模拟培训"
                       : "模拟培训待完成"}
                   </span>
+                  {selected.daysSinceOnboarding !== null && (
+                    <span>
+                      入驻已 {selected.daysSinceOnboarding} 天；关键培训目标{" "}
+                      {partnerRiskPolicy.trainingTargetDays} 天
+                    </span>
+                  )}
+                  {selected.daysSinceTrainingCompleted !== null && (
+                    <span>
+                      关键培训完成于演示 {selected.daysSinceTrainingCompleted}{" "}
+                      天前
+                    </span>
+                  )}
                 </dd>
               </div>
               <div>
@@ -386,7 +447,10 @@ export function ChannelPartnerDemo() {
               </div>
               <div>
                 <dt>Last Activity / 最近活动</dt>
-                <dd>{partnerActivityLabel(selected.daysSinceActivity)}</dd>
+                <dd>
+                  {partnerActivityLabel(selected.daysSinceActivity)}
+                  <span>有效业务动作，如培训或商机推进</span>
+                </dd>
               </div>
               <div>
                 <dt>Owner / 模拟负责人</dt>
@@ -404,25 +468,38 @@ export function ChannelPartnerDemo() {
             </dl>
             <details className="partner-score-detail">
               <summary>查看六维评分依据与加权结果（0—5 分模拟评估）</summary>
+              <p className="partner-note">
+                Contribution = Rating / 5 × Weight。Weight 使用百分数点值（如
+                20），Contribution 以分计；最终 Qualification Score
+                为各维度贡献之和，满分 100。
+              </p>
               <dl className="partner-score-grid">
-                {qualificationDimensions.map((dimension) => (
+                {qualificationBreakdown(selected).map((dimension) => (
                   <div key={dimension.id}>
                     <dt>
                       {dimension.english}
                       <span>{dimension.label}</span>
                     </dt>
                     <dd>
-                      <strong>{selected.ratings[dimension.id]} / 5</strong>
                       <span>
-                        权重 {dimension.weight} →{" "}
-                        {(selected.ratings[dimension.id] / 5) *
-                          dimension.weight}{" "}
-                        分
+                        Rating / 原始评分：
+                        <strong>{dimension.rating} / 5</strong>
+                      </span>
+                      <span>Weight / 权重：{dimension.weight}%</span>
+                      <span>
+                        Contribution / 贡献：
+                        <strong>
+                          {dimension.contribution} / {dimension.weight}
+                        </strong>
                       </span>
                     </dd>
                   </div>
                 ))}
               </dl>
+              <p className="partner-score-total">
+                Qualification Score：
+                <strong>{qualificationScore(selected)} / 100</strong>
+              </p>
             </details>
             <div className="partner-decision-grid">
               <div className="partner-risk-panel">
@@ -445,6 +522,20 @@ export function ChannelPartnerDemo() {
               <div className="partner-action-panel">
                 <h4>Next Action / 下一步</h4>
                 <p>{action.action}</p>
+                <dl className="partner-action-execution">
+                  <div>
+                    <dt>Owner / 执行负责人</dt>
+                    <dd>{action.owner}</dd>
+                  </div>
+                  <div>
+                    <dt>Due Date / 截止时间</dt>
+                    <dd>演示快照起 {action.dueDays} 天内（模拟）</dd>
+                  </div>
+                  <div>
+                    <dt>Success Criteria / 验收标准</dt>
+                    <dd>{action.successCriteria}</dd>
+                  </div>
+                </dl>
                 <h4>Why this action?</h4>
                 <p>{action.why}</p>
                 <small>
@@ -467,6 +558,14 @@ export function ChannelPartnerDemo() {
                         {opportunity.id} · {partnerMoney(opportunity.value)}
                       </strong>
                       <span>
+                        {opportunity.stage === "opportunity"
+                          ? "Opportunity / 商机阶段"
+                          : opportunity.stage === "proposal"
+                            ? "Proposal / 方案阶段"
+                            : opportunity.stage === "won"
+                              ? "Won / 成交阶段"
+                              : "Lost / 已关闭"}{" "}
+                        ·{" "}
                         {opportunity.status === "open"
                           ? "Open / 未关闭"
                           : opportunity.status === "won"
