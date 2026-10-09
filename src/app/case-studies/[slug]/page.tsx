@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { caseStudies } from "@/data/career";
-import { CareerShell, AiWorkflow } from "@/components/career-ui";
+import {
+  CareerShell,
+  AiWorkflow,
+  AiApplications,
+  AiTools,
+} from "@/components/career-ui";
 import { ResultText } from "@/components/result-text";
 import "../../career.css";
 
@@ -42,7 +47,7 @@ export default async function CasePage({ params }: Props) {
   const next = caseStudies[(index + 1) % caseStudies.length];
   return (
     <CareerShell>
-      <main id="main" className="container career-case-page">
+      <main id="main" className={`container career-case-page case-${slug}`}>
         <nav className="career-breadcrumb" aria-label="面包屑">
           <Link href="/">首页</Link>
           <span aria-hidden="true">/</span>
@@ -94,6 +99,9 @@ export default async function CasePage({ params }: Props) {
                   0{i + 1} / {section.english}
                 </p>
                 <h2>{section.title}</h2>
+                {slug === "ai-productivity" && section.english === "ACTION" && (
+                  <AiApplications />
+                )}
                 {section.paragraphs.map((text) => (
                   <p key={text}>
                     <ResultText text={text} />
@@ -116,6 +124,8 @@ export default async function CasePage({ params }: Props) {
           <section className="case-ai-workflow">
             <h2>从问题到交付的工作流</h2>
             <AiWorkflow />
+            <h2>工具分级</h2>
+            <AiTools />
             <div className="actions">
               <Link className="button secondary" href="/resume-print">
                 查看求职材料 ↗
@@ -125,8 +135,8 @@ export default async function CasePage({ params }: Props) {
               </Link>
             </div>
             <p className="case-footnote">
-              工具层级与应用方向见 <Link href="/#ai">首页 AI 能力</Link>；本
-              Demo 的建议使用本地规则，不连接 AI API。
+              更多应用方向见 <Link href="/#ai">首页 AI 能力</Link>；本 Demo
+              的建议使用本地规则，不连接 AI API。
             </p>
           </section>
         )}

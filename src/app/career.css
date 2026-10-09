@@ -42,6 +42,10 @@
 .career-site .section-heading {
   margin-bottom: 32px;
 }
+.career-site :is(#experience, #ai, #lab) {
+  padding-top: 62px;
+  padding-bottom: 62px;
+}
 .career-site .hero-copy {
   min-width: 0;
 }
@@ -216,7 +220,7 @@
 }
 .case-card-metrics {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   padding-top: 22px;
   border-top: 1px solid var(--line);
@@ -261,7 +265,7 @@
   display: grid;
   grid-template-columns: 210px minmax(0, 1fr);
   gap: 32px;
-  padding: 30px 0;
+  padding: 24px 0;
   border-top: 1px solid var(--line);
 }
 .career-period {
@@ -284,6 +288,9 @@
 }
 .career-timeline-entry .job-highlights {
   margin: 22px 0;
+}
+.career-timeline-entry .job-highlights strong {
+  font-size: 20px;
 }
 .career-details {
   margin-top: 24px;
@@ -322,9 +329,12 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 }
+.ai-application-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 .ai-application-grid article {
   border-top: 1px solid #cfd8c6;
-  padding: 24px 0;
+  padding: 20px 0;
 }
 .ai-application-grid small {
   font-size: 12px;
@@ -365,6 +375,52 @@
   font-size: 13px;
   color: var(--green);
   margin-top: 20px;
+}
+.ai-case-fields {
+  margin: 18px 0;
+}
+.ai-case-fields > div + div {
+  margin-top: 16px;
+}
+.ai-case-fields dt {
+  font-size: 11px;
+  color: var(--green);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.ai-case-fields dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+.ai-case-fields > div:last-child dd {
+  color: var(--ink);
+  font-weight: 500;
+}
+.career-site .ai-evidence {
+  font-size: 13px;
+}
+.case-ai-productivity .ai-application-grid {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.case-ai-productivity .ai-case-fields > div {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 18px;
+}
+.case-ai-productivity .ai-case-fields dt {
+  margin-top: 3px;
+}
+.case-ai-productivity .ai-application-grid h3 {
+  font-size: 21px;
+}
+.case-ai-productivity .case-reading-body > section {
+  padding: 26px 0;
+}
+.case-ai-productivity .case-scope {
+  margin-bottom: 40px;
 }
 .career-workflow {
   display: grid;
@@ -416,7 +472,7 @@
 }
 .career-tool-grid article {
   background: var(--bg);
-  padding: 24px;
+  padding: 18px;
   border: 1px solid var(--line);
   border-radius: 4px;
 }
@@ -431,7 +487,7 @@
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   gap: 80px;
-  padding: 40px;
+  padding: 32px;
   border: 1px solid var(--line);
   background: #f4f5ef;
   border-radius: 4px;
@@ -930,5 +986,21 @@
   }
   .career-site .button:hover {
     transform: none;
+  }
+}
+@media (max-width: 760px) {
+  .career-site :is(#experience, #ai, #lab) {
+    padding-top: 44px;
+    padding-bottom: 44px;
+  }
+  .ai-application-grid {
+    grid-template-columns: 1fr;
+  }
+  .case-ai-productivity .ai-case-fields > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .case-card-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

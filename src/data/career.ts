@@ -12,6 +12,8 @@ export const career = {
     "Business Development / Operations / Project Execution / AI-Native Productivity",
   intro:
     "具备活动项目、销售推广、团队管理、门店运营和新人培训等一线业务经验，能够从业务目标出发完成任务拆解、流程设计与执行落地，并持续探索 AI 工具在业务、运营与效率提升中的实际应用。",
+  aboutExperience:
+    "我做过活动策划与现场执行，协调客户、供应商、人员、物料和时间；做过课程销售，从个人成交到带领约 10 人地推团队，进行人员分区、话术优化、目标拆解、现场监督与团队复盘；目前在黑马电竞参与门店运营、招聘带教、服务流程、SOP 搭建及直播引流。",
   metrics: [
     {
       value: "数十场",
@@ -31,7 +33,7 @@ export const career = {
     {
       value: "约 10 人",
       label: "地推销售团队规模",
-      note: "参与团队执行管理与现场监督",
+      note: "人员分区、话术优化与现场监督",
     },
   ],
   workflow: [
@@ -67,7 +69,7 @@ export const career = {
     },
     {
       english: "Output",
-      title: "沉淀交付",
+      title: "整理交付",
       detail: "整理成文档、流程或可运行项目。",
     },
   ],
@@ -88,34 +90,39 @@ export const career = {
       label: "Exploring",
       title: "持续学习",
       tools: ["Midjourney", "即梦", "ComfyUI"],
-      note: "了解视觉生成工作流，不将所有工具标为精通。",
+      note: "正在学习视觉生成工作流。",
     },
   ],
   aiApplications: [
     {
       title: "新人 SOP",
-      action: "辅助整理教学内容、练习任务与考核标准，再结合门店实际流程修订。",
-      output: "三天试岗流程",
+      problem: "新人培训依赖经验传递，教学顺序和标准不统一。",
+      collaboration:
+        "整理流程、任务拆解、考核标准设计；结合门店实际要求人工校验。",
+      output: "三天新人试岗 SOP",
+      evidence: "已用于新人带教，平均适应周期由约 7 天缩短至约 3 天。",
+      href: "/case-studies/store-operations",
       kind: "业务应用",
     },
     {
       title: "商业与岗位研究",
-      action:
-        "梳理行业背景、岗位职责与伙伴业务逻辑，核查来源并持续学习陌生领域。",
-      output: "研究与学习材料",
+      problem: "需要快速理解陌生公司、行业和岗位，形成有依据的准备材料。",
+      collaboration:
+        "拆解 JD、研究行业、整理业务模型、构建问题树，并核查资料来源。",
+      output: "岗位研究材料、业务框架、面试准备内容",
+      evidence: "用于个人岗位学习和面试准备，未提供公开附件或量化效率结果。",
+      href: null,
       kind: "学习应用",
     },
     {
-      title: "简历与内容结构化",
-      action: "整理真实经历、筛选数字证据，优化求职材料与项目方案的表达结构。",
-      output: "在线简历与求职 PDF",
-      kind: "可查看交付",
-    },
-    {
-      title: "本 Portfolio 网站",
-      action:
-        "使用 Codex 完成页面开发、交互实现和检查，将需求推进为可运行网站。",
+      title: "Portfolio 网站",
+      problem: "分散的工作经历需要转化为可以查看过程、行动和结果的职业作品集。",
       output: "当前职业作品集",
+      collaboration:
+        "定义需求、设计信息架构、与 Codex 协作开发，并人工验收内容与页面。",
+      evidence:
+        "当前 Career Portfolio 可运行；页面、交互与求职材料可直接查看。",
+      href: "/",
       kind: "可查看交付",
     },
   ],
@@ -139,7 +146,7 @@ export const career = {
       title: "Channel & Partners",
       label: "渠道 / 伙伴业务",
       evidence: "多方协同 + 培训 + 标准化",
-      transfer: "将资源协调和带教经验用于伙伴协作、流程执行与赋能支持。",
+      transfer: "将资源协调和带教经验用于伙伴协作、流程执行与培训支持。",
       case: "store-operations",
     },
     {
@@ -179,7 +186,7 @@ export const career = {
     {
       title: "团队协作",
       proof:
-        "参与约 10 人销售团队管理及约 30 人跨公司协作，能在团队中推进任务。",
+        "带领约 10 人地推团队，参与约 30 人跨公司协作，按目标推进人员与现场任务。",
       case: "sales-team",
     },
     {
@@ -229,6 +236,48 @@ const heima = portfolio.jobs.find((j) => j.id === "heima")!;
 const xinchuang = portfolio.jobs.find((j) => j.id === "xinchuang")!;
 const tuoyou = portfolio.jobs.find((j) => j.id === "tuoyou")!;
 
+/** 作品集表达独立于已定稿的原简历；沿用原始工作时间与确认数据。 */
+export const careerJobs = portfolio.jobs.map((job) => {
+  if (job.id === "tuoyou")
+    return {
+      ...job,
+      summary:
+        "从个人课程销售到带领约 10 人地推团队，负责人员分区、销售话术优化、目标拆解、现场监督与团队复盘。",
+      highlights: [
+        { value: "约 10 人", note: "地推团队规模" },
+        { value: "2 小时 10 单", note: "个人峰值成交" },
+        { value: "Top 1 / 3", note: "同期三个团队中阶段表现最佳" },
+      ],
+      points: [
+        "带领约 10 人地推团队，进行人员分区、销售话术优化、目标拆解、现场监督与团队复盘。",
+        "课程单价 99 元，个人销售阶段 2 小时最高成交 10 单。",
+        "团队单次最高业绩约 2700 元，在同期 3 个团队中取得阶段最好成绩；不代表长期排名或公司整体排名。",
+      ],
+    };
+  if (job.id === "xinchuang")
+    return {
+      ...job,
+      highlights: [
+        { value: "数十场", note: "项目参与" },
+        { value: "约 30 人", note: "最大项目协作规模" },
+        { value: "约 60 万元", note: "累计参与项目预算规模" },
+      ],
+      points: [
+        ...job.points.slice(0, 2),
+        "黄石百洞峡项目：在洞内特殊现场环境下参与物料搬运、搭建与人员协调，跟进关键节点并推进现场执行。",
+        "参与森灵欢乐世界、槐荫船说等项目，按场地、人员、设备及物料条件协调执行。",
+        "预算为累计参与项目量级，不代表个人预算管理职责；百洞峡项目职责为现场执行与协作。",
+      ],
+    };
+  return job;
+});
+
+export const careerSkills = portfolio.skills.map((skill) =>
+  skill.id === "business"
+    ? { ...skill, evidence: ["个人 2 小时最高 10 单", "带领约 10 人地推团队"] }
+    : skill,
+);
+
 /** 直播数字以既有本人确认口径为准：约 300 → 500 → 580，非从 0 涨粉 500。 */
 export const caseStudies: readonly CaseStudy[] = [
   {
@@ -244,9 +293,8 @@ export const caseStudies: readonly CaseStudy[] = [
     tags: ["现场协调", "多方协作", "节点与物料管理"],
     metrics: [
       { value: "数十场", label: "参与活动项目" },
-      { value: "5 场 / 3 场", label: "独立完成开业活动 / 生日宴" },
-      { value: "约 30 人", label: "最大跨公司协作团队" },
-      { value: "约 60 万元", label: "累计接触项目预算量级" },
+      { value: "约 30 人", label: "最大项目协作规模" },
+      { value: "约 60 万元", label: "累计参与项目预算规模" },
     ],
     sections: [
       {
@@ -272,13 +320,15 @@ export const caseStudies: readonly CaseStudy[] = [
         english: "CHALLENGE",
         paragraphs: [
           "多方同时参与，人员、物料、设备和时间需要相互配合；场地限制与现场变化会影响原有安排。",
-          "百洞峡项目有洞内物料搬运和搭建等特殊现场条件，需要结合场地实际安排执行。",
+          "黄石百洞峡项目有洞内物料搬运和搭建等特殊现场条件，需要结合场地实际安排执行。",
         ],
       },
       {
         title: "我的行动",
         english: "ACTION",
-        paragraphs: [],
+        paragraphs: [
+          "黄石百洞峡项目：在洞内特殊环境下参与物料搬运与现场搭建，配合人员协调，跟进关键节点并推进现场执行。我的职责是执行与协作，不是项目总负责人。",
+        ],
         bullets: event.action,
       },
       {
@@ -316,13 +366,12 @@ export const caseStudies: readonly CaseStudy[] = [
     period: "2023 — 2024",
     summary: "在 99 元课程销售中，把一线反馈转化为约 10 人团队的执行方法。",
     scope:
-      "大学期间兼职课程销售；从个人销售逐步参与团队执行管理，不等同于企业 ToB 销售经历。",
+      "大学期间兼职课程销售，从个人销售到带领约 10 人地推团队；排名为同期三个团队的阶段表现，不代表长期第一或公司第一。",
     tags: ["需求判断", "销售转化", "团队执行"],
     metrics: [
-      { value: "2 小时 / 10 单", label: "个人销售阶段最高成交" },
-      { value: "99 元", label: "课程单价" },
-      { value: "约 10 人", label: "参与管理的销售团队" },
-      { value: "约 2700 元", label: "团队单次最高业绩" },
+      { value: "约 10 人", label: "地推团队规模" },
+      { value: "2 小时 10 单", label: "个人峰值成交" },
+      { value: "Top 1 / 3", label: "同期三个团队中阶段表现最佳" },
     ],
     sections: [
       {
@@ -333,10 +382,12 @@ export const caseStudies: readonly CaseStudy[] = [
       {
         title: "我的职责",
         english: "MY ROLE",
-        paragraphs: [tuoyou.summary],
+        paragraphs: [
+          "带领约 10 人地推团队，把一线销售反馈转成团队可执行的方法。",
+        ],
         bullets: [
           "一线接触用户、判断需求与推进成交。",
-          "参与人员分区、销售话术调整、目标分配、过程监督与团队复盘。",
+          "负责人员分区、销售话术优化、目标拆解、现场监督与团队复盘。",
         ],
       },
       {
@@ -352,13 +403,18 @@ export const caseStudies: readonly CaseStudy[] = [
         paragraphs: [
           "围绕用户接触 → 需求判断 → 销售话术 → 异议处理 → 成交 → 团队复制理解销售过程。",
         ],
-        bullets: sales.action,
+        bullets: [
+          "按区域划分人员与任务，统一核心销售话术并拆解执行目标。",
+          "结合客户反馈优化开场、需求判断、异议处理与成交推进方式。",
+          "现场监督成员执行，并通过团队复盘调整方法。",
+        ],
       },
       {
         title: "最终结果",
         english: "RESULT",
         paragraphs: [
-          ...sales.result,
+          "课程单价 99 元；个人销售阶段 2 小时最高 10 单。",
+          "团队单次最高业绩约 2700 元，在同期 3 个团队中取得阶段最好成绩。",
           "以上为个人阶段最高记录及团队单次最高表现，不代表日均或长期稳定业绩。",
         ],
       },
@@ -439,7 +495,7 @@ export const caseStudies: readonly CaseStudy[] = [
         title: "可以迁移到什么能力",
         english: "TRANSFERABLE SKILLS",
         paragraphs: [
-          "运营岗位的流程梳理、服务标准与结果跟踪；伙伴支持中的培训、赋能材料整理和执行检查；团队协作中的统一标准与过程管理。",
+          "运营岗位的流程梳理、服务标准与结果跟踪；伙伴支持中的培训材料整理和执行检查；团队协作中的统一标准与过程管理。",
         ],
       },
     ],
@@ -447,7 +503,7 @@ export const caseStudies: readonly CaseStudy[] = [
   {
     slug: "ai-productivity",
     number: "04",
-    title: "让 AI 参与实际工作与交付",
+    title: "AI 是工作杠杆，输出要能实际使用。",
     category: "AI-NATIVE PRODUCTIVITY",
     organization: "个人工作实践",
     period: "持续实践",
@@ -484,10 +540,9 @@ export const caseStudies: readonly CaseStudy[] = [
         ],
       },
       {
-        title: "我的行动",
+        title: "三个实际应用案例",
         english: "ACTION",
         paragraphs: [],
-        bullets: career.aiApplications.map((a) => `${a.title}：${a.action}`),
       },
       {
         title: "最终结果",

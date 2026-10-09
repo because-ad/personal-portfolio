@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   demoLeads,
   stages,
-  nextAction,
+  actionForLead,
+  isStalled,
   stageInfo,
   pipelineMetrics,
   money,
   followUpLabel,
+  lastContactLabel,
   type Stage,
 } from "@/data/sales-pipeline";
 
@@ -20,6 +22,8 @@ export function SalesPipeline() {
   const [filter, setFilter] = useState<Stage | "all">("all");
   const [selected, setSelected] = useState(demoLeads[0].id);
   const [announcement, setAnnouncement] = useState("");
+  const [showAllFollowUps, setShowAllFollowUps] = useState(false);
+  const detailsHeading = useRef<HTMLHeadingElement>(null);
   const metrics = pipelineMetrics(leads);
   const visible = leads.filter(
     (lead) =>
@@ -29,6 +33,15 @@ export function SalesPipeline() {
         .includes(query.trim().toLowerCase()),
   );
   const current = visible.find((lead) => lead.id === selected) ?? visible[0];
+  const advice = current ? actionForLead(current) : null;
+  function selectLead(id: string, clearFilters = false) {
+    if (clearFilters) {
+      setFilter("all");
+      setQuery("");
+    }
+    setSelected(id);
+    detailsHeading.current?.focus();
+  }
   function updateStage(id: string, stage: Stage) {
     const lead = leads.find((item) => item.id === id)!;
     setLeads((items) =>
@@ -43,6 +56,7 @@ export function SalesPipeline() {
     setQuery("");
     setFilter("all");
     setSelected(demoLeads[0].id);
+    setShowAllFollowUps(false);
     setAnnouncement("已重置模拟数据。");
   }
 
@@ -56,7 +70,7 @@ export function SalesPipeline() {
       </div>
       <div className="pipeline-overview">
         <h2>
-          Dashboard <span>全量模拟记录</span>
+          Dashboard <span>Demo Data / {leads.length} 条全量模拟记录</span>
         </h2>
         <button className="button secondary" type="button" onClick={reset}>
           重置演示
@@ -80,7 +94,7 @@ export function SalesPipeline() {
       </div>
       <dl className="pipeline-kpis">
         <div>
-          <dt>Pipeline Value</dt>
+          <dt>Total Pipeline</dt>
           <dd data-testid="pipeline-value">{money(metrics.pipelineValue)}</dd>
           <p>未成交记录的估算金额之和</p>
         </div>
@@ -90,11 +104,11 @@ export function SalesPipeline() {
           <p>未成交金额 × 所在阶段的模拟概率</p>
         </div>
         <div>
-          <dt>Conversion Rate</dt>
+          <dt>Win Rate</dt>
           <dd data-testid="conversion-rate">
             {metrics.conversionRate.toFixed(1)}%
           </dd>
-          <p>已成交记录 ÷ 全部模拟记录</p>
+          <p>当前已成交记录 ÷ 全部模拟记录</p>
         </div>
         <div>
           <dt>Next Follow-ups</dt>
@@ -104,7 +118,9 @@ export function SalesPipeline() {
       </dl>
       <div className="pipeline-analysis-grid">
         <section className="pipeline-panel">
-          <h2>销售漏斗</h2>
+          <h2>
+            销售漏斗 <span className="pipeline-data-label">模拟值</span>
+          </h2>
           <p className="pipeline-caption">
             累计到达各阶段的数量，按当前阶段推算；并非真实历史转化记录。
           </p>
@@ -127,25 +143,27 @@ export function SalesPipeline() {
           </ol>
         </section>
         <section className="pipeline-panel">
-          <h2>近期跟进</h2>
+          <h2>
+            近期跟进 <span className="pipeline-data-label">模拟安排</span>
+          </h2>
           <p className="pipeline-caption">
             时间相对演示日计算，与真实日程无关。
           </p>
           <ul className="pipeline-followups">
-            {metrics.followUps.map((lead) => (
+            {(showAllFollowUps
+              ? metrics.followUps
+              : metrics.followUps.slice(0, 4)
+            ).map((lead) => (
               <li key={lead.id}>
                 <button
                   type="button"
-                  onClick={() => {
-                    setFilter("all");
-                    setQuery("");
-                    setSelected(lead.id);
-                  }}
+                  aria-controls="customer-details"
+                  onClick={() => selectLead(lead.id, true)}
                 >
                   <strong>{lead.company}</strong>
                   <span>
                     {followUpLabel(lead.followUpDays)} ·{" "}
-                    {nextAction[lead.stage].short}
+                    {actionForLead(lead).short}
                   </span>
                 </button>
               </li>
@@ -154,8 +172,35 @@ export function SalesPipeline() {
               <li>当前没有待跟进的模拟记录。</li>
             )}
           </ul>
+          {metrics.followUps.length > 4 && (
+            <button
+              className="pipeline-expand"
+              type="button"
+              aria-expanded={showAllFollowUps}
+              onClick={() => setShowAllFollowUps((value) => !value)}
+            >
+              {showAllFollowUps
+                ? "收起跟进列表"
+                : `查看全部 ${metrics.followUps.length} 条近期跟进`}{" "}
+              ↓
+            </button>
+          )}
         </section>
       </div>
+      <section className="pipeline-rules" aria-labelledby="rules-heading">
+        <h2 id="rules-heading">Pipeline Rules</h2>
+        <p className="pipeline-caption">
+          阶段代表推进条件，避免只给客户贴标签。以下为 Demo 的简化规则。
+        </p>
+        <ol>
+          {stages.map((stage) => (
+            <li key={stage.id}>
+              <strong>{stage.label}</strong>
+              <p>{stage.rule}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
       <section className="pipeline-records" aria-labelledby="records-heading">
         <div className="pipeline-record-heading">
           <div>
@@ -193,7 +238,7 @@ export function SalesPipeline() {
           </div>
         </div>
         <p className="pipeline-table-hint" id="table-hint">
-          手机上可横向滑动表格。点击公司查看对应建议。
+          手机上可横向滑动表格。点击公司跳转至客户详情与行动依据。
         </p>
         <div
           className="pipeline-table-scroll"
@@ -232,7 +277,8 @@ export function SalesPipeline() {
                       className="pipeline-company-button"
                       type="button"
                       aria-pressed={lead.id === current?.id}
-                      onClick={() => setSelected(lead.id)}
+                      aria-controls="customer-details"
+                      onClick={() => selectLead(lead.id)}
                     >
                       {lead.company}
                     </button>
@@ -256,7 +302,7 @@ export function SalesPipeline() {
                   </td>
                   <td>{money(lead.value)}</td>
                   <td>{stageInfo(lead.stage).probability}%</td>
-                  <td>{nextAction[lead.stage].short}</td>
+                  <td>{actionForLead(lead).short}</td>
                   <td>{lead.owner}</td>
                 </tr>
               ))}
@@ -269,20 +315,63 @@ export function SalesPipeline() {
           )}
         </div>
       </section>
-      <section className="pipeline-advice" aria-labelledby="advice-heading">
+      <section
+        id="customer-details"
+        className="pipeline-advice"
+        aria-labelledby="advice-heading"
+      >
         <div>
-          <p className="eyebrow">AI NEXT ACTION / 功能演示</p>
-          <h2 id="advice-heading">下一步行动建议</h2>
+          <p className="eyebrow">CUSTOMER DETAILS / 模拟客户详情</p>
+          <h2 id="advice-heading" ref={detailsHeading} tabIndex={-1}>
+            客户详情与下一步行动
+          </h2>
           <p className="pipeline-caption">
-            使用本地阶段规则展示，不调用 AI API，也不分析真实客户。
+            使用本地业务规则，不调用 AI API。全部字段与推荐动作均为模拟。
           </p>
+          <a className="text-link" href="#records-heading">
+            返回客户记录 ↑
+          </a>
         </div>
         <div aria-live="polite">
           {current ? (
             <>
-              <h3>{current.company}</h3>
-              <p>{nextAction[current.stage].advice}</p>
-              <small>{nextAction[current.stage].reason}</small>
+              <dl className="pipeline-customer-fields">
+                <div>
+                  <dt>Company / 公司</dt>
+                  <dd>{current.company}</dd>
+                </div>
+                <div>
+                  <dt>Stage / 阶段</dt>
+                  <dd>{stageInfo(current.stage).label}</dd>
+                </div>
+                <div>
+                  <dt>Deal Value / 机会金额</dt>
+                  <dd>{money(current.value)}</dd>
+                </div>
+                <div>
+                  <dt>Probability / 模拟概率</dt>
+                  <dd>{stageInfo(current.stage).probability}%</dd>
+                </div>
+                <div>
+                  <dt>Last Contact / 上次联系</dt>
+                  <dd>{lastContactLabel(current.lastContactDays)}</dd>
+                </div>
+                <div>
+                  <dt>Decision Maker / 决策人</dt>
+                  <dd>{current.decisionMaker}</dd>
+                </div>
+                <div className="pipeline-next-action">
+                  <dt>Next Action / 下一步</dt>
+                  <dd>{advice?.advice}</dd>
+                </div>
+              </dl>
+              {isStalled(current) && (
+                <p className="pipeline-risk">
+                  停滞风险：模拟 7 天及以上未联系，需重新确认推进意愿。
+                </p>
+              )}
+              <h3 className="pipeline-reason-heading">Why this action?</h3>
+              <p className="pipeline-reason">{advice?.reason}</p>
             </>
           ) : (
             <p>请选择或搜索一条模拟记录。</p>
@@ -292,12 +381,23 @@ export function SalesPipeline() {
       <p className="pipeline-status" role="status">
         {announcement}
       </p>
+      <section className="pipeline-thinking" aria-labelledby="thinking-heading">
+        <h2 id="thinking-heading">How I Think About Pipeline</h2>
+        <p>Pipeline 帮助销售把客户信息变成投入与推进判断。</p>
+        <ul>
+          <li>优先投入：需求、机会金额与推进条件是否值得继续跟进？</li>
+          <li>阶段阻碍：卡在需求、决策链、预算还是方案反馈？</li>
+          <li>下一步动作：谁来推进、确认什么、何时再联系？</li>
+          <li>停滞风险：长期未联系的机会，是否仍然有效？</li>
+          <li>预期收入：用机会金额和概率估算，不把估算当成已实现收入。</li>
+        </ul>
+      </section>
       <details className="career-details">
         <summary>
           查看计算口径与业务理解 <span aria-hidden="true">＋</span>
         </summary>
         <p>
-          Lead → Qualification → Opportunity → Proposal → Closing。Demo
+          Lead → Qualified → Opportunity → Proposal → Won。Demo
           用五个简化阶段表达需求判断、商机推进与成交交接，不包含复杂 CRM
           权限、真实历史转化、合同或收入确认。
         </p>
@@ -305,6 +405,10 @@ export function SalesPipeline() {
           概率为固定演示值：10%、25%、50%、75%、100%。Pipeline 及 Weighted
           Pipeline 排除已成交记录，成交率为当前已成交数量 /
           全量记录数。漏斗数量采用当前阶段顺序累计推算，不能据此推断真实流失率。
+        </p>
+        <p>
+          全部日期相对演示日计算；未成交记录 7
+          天及以上未联系时提示停滞风险。阶段切换只演示概率、汇总和建议联动，不会自动补齐决策人信息；筛选只影响列表和当前详情。
         </p>
       </details>
     </div>

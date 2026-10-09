@@ -1,9 +1,21 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { portfolio as p } from "@/data/portfolio";
-import { career, caseStudies, workCaseSlugs } from "@/data/career";
+import {
+  career,
+  careerJobs,
+  careerSkills,
+  caseStudies,
+  workCaseSlugs,
+} from "@/data/career";
 import { huaweiResume } from "@/data/resume-print";
-import { CareerShell, CaseCard, AiWorkflow } from "@/components/career-ui";
+import {
+  CareerShell,
+  CaseCard,
+  AiWorkflow,
+  AiApplications,
+  AiTools,
+} from "@/components/career-ui";
 import { SectionHeading } from "@/components/section-heading";
 import { ResultText } from "@/components/result-text";
 import "./career.css";
@@ -58,7 +70,7 @@ export default function Home() {
               {[
                 { title: "销售", text: "理解需求与成交过程" },
                 { title: "项目", text: "协调资源，推进现场交付" },
-                { title: "运营", text: "把服务经验沉淀成 SOP" },
+                { title: "运营", text: "把服务流程整理成 SOP" },
               ].map((item, index) => (
                 <li key={item.title}>
                   <span>0{index + 1}</span>
@@ -115,7 +127,7 @@ export default function Home() {
             description="销售 → 项目执行 → 团队协作 → 运营与标准化"
           />
           <div className="career-timeline">
-            {[...p.jobs].reverse().map((job) => (
+            {[...careerJobs].reverse().map((job) => (
               <article className="career-timeline-entry" key={job.id}>
                 <div className="career-period">
                   <span className="timeline-dot" />
@@ -162,27 +174,9 @@ export default function Home() {
               title="AI 是工作杠杆，输出要能实际使用。"
               description="明确问题、协作产出、人工复核、推进交付。"
             />
-            <div className="ai-application-grid">
-              {career.aiApplications.map((a) => (
-                <article key={a.title}>
-                  <small>{a.kind}</small>
-                  <h3>{a.title}</h3>
-                  <p>{a.action}</p>
-                  <span className="application-output">输出：{a.output}</span>
-                </article>
-              ))}
-            </div>
+            <AiApplications />
             <AiWorkflow />
-            <div className="career-tool-grid">
-              {career.toolGroups.map((group) => (
-                <article key={group.label}>
-                  <p className="eyebrow">{group.label}</p>
-                  <h3>{group.title}</h3>
-                  <p className="tool-names">{group.tools.join(" · ")}</p>
-                  <p>{group.note}</p>
-                </article>
-              ))}
-            </div>
+            <AiTools />
             <div className="section-end-link">
               <Link className="text-link" href="/case-studies/ai-productivity">
                 查看 AI 工作方式与可查看交付 ↗
@@ -273,7 +267,7 @@ export default function Home() {
                 已有能力与办公工具 <span aria-hidden="true">＋</span>
               </summary>
               <div className="career-skill-grid">
-                {p.skills.map((skill) => (
+                {careerSkills.map((skill) => (
                   <article key={skill.id}>
                     <h3>{skill.title}</h3>
                     <p>{skill.keywords.join(" · ")}</p>
@@ -292,7 +286,7 @@ export default function Home() {
           <SectionHeading
             number="07"
             english="REPRESENTATIVE WORK"
-            title="从工作中，沉淀方法与交付。"
+            title="工作方法与实际交付。"
             description="工作记录链接至案例；未提供原始附件的内容不虚设下载。"
           />
           <div className="work-cards">
@@ -331,7 +325,7 @@ export default function Home() {
           <div className="career-about-grid">
             <div>
               <p className="large-copy">{p.aboutSummary}</p>
-              <p className="body-copy">{p.about[1]}</p>
+              <p className="body-copy">{career.aboutExperience}</p>
               <details className="career-details">
                 <summary>
                   更多个人经历 <span aria-hidden="true">＋</span>

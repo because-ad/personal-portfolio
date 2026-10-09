@@ -46,7 +46,7 @@ export function CaseCard({ study }: { study: CaseStudy }) {
       </h3>
       <p className="case-summary">{study.summary}</p>
       <dl className="case-card-metrics">
-        {study.metrics.slice(0, 2).map((m) => (
+        {study.metrics.map((m) => (
           <div key={m.label}>
             <dt>{m.label}</dt>
             <dd>{m.value}</dd>
@@ -81,5 +81,54 @@ export function AiWorkflow() {
         </li>
       ))}
     </ol>
+  );
+}
+
+export function AiApplications() {
+  return (
+    <div className="ai-application-grid">
+      {career.aiApplications.map((application, index) => (
+        <article key={application.title}>
+          <small>
+            0{index + 1} / {application.kind}
+          </small>
+          <h3>{application.title}</h3>
+          <dl className="ai-case-fields">
+            <div>
+              <dt>Business Problem / 业务问题</dt>
+              <dd>{application.problem}</dd>
+            </div>
+            <div>
+              <dt>AI Collaboration / 协作与校验</dt>
+              <dd>{application.collaboration}</dd>
+            </div>
+            <div>
+              <dt>Output / 实际输出</dt>
+              <dd>{application.output}</dd>
+            </div>
+          </dl>
+          <p className="ai-evidence">{application.evidence}</p>
+          {application.href && (
+            <Link className="text-link" href={application.href}>
+              查看实际交付 ↗
+            </Link>
+          )}
+        </article>
+      ))}
+    </div>
+  );
+}
+
+export function AiTools() {
+  return (
+    <div className="career-tool-grid">
+      {career.toolGroups.map((group) => (
+        <article key={group.label}>
+          <p className="eyebrow">{group.label}</p>
+          <p className="tool-names">{group.tools.join(" / ")}</p>
+          <p>{group.note}</p>
+        </article>
+      ))}
+    </div>
   );
 }
