@@ -90,9 +90,7 @@ export default function StarryCocktailPage() {
             <p className="starry-subtitle">{s.subtitle}</p>
             <p className="starry-positioning">{s.positioning}</p>
             <p className="starry-lead">{s.description}</p>
-            <p className="starry-scope">
-              个人独立推进的真实项目。本案例展示方案、设计方向与产品实验，项目产出不等同于已经验证的商业结果。
-            </p>
+            <p className="starry-scope">{s.scopeNote}</p>
             <div className="actions">
               <a className="button primary" href="#outputs">
                 先看项目产出 ↓
@@ -104,7 +102,7 @@ export default function StarryCocktailPage() {
           </div>
           <figure className="starry-brand-cover">
             <StarryLockup />
-            <figcaption>Design Concept / 设计方案 · 非实物照片</figcaption>
+            <figcaption>{s.displayLabels.design}</figcaption>
           </figure>
         </header>
         <dl className="starry-key-facts">
@@ -190,11 +188,11 @@ export default function StarryCocktailPage() {
             >
               <figure className="starry-booth-figure">
                 <span className="starry-concept-label">
-                  Design Concept / 设计方案
+                  {s.displayLabels.prototype}
                 </span>
                 <StarryBoothSketch />
                 <figcaption>
-                  正面结构示意，非实物照片；尺寸来自本人提供的方案。
+                  正面结构原型示意；尺寸来自本人提供的方案。
                 </figcaption>
               </figure>
               <dl className="starry-specifications">
@@ -281,7 +279,9 @@ export default function StarryCocktailPage() {
               <div className="starry-recipe-grid">
                 {s.recipes.map((recipe) => (
                   <article key={recipe.title}>
-                    <span className="starry-status-tag">{recipe.state}</span>
+                    <span className="starry-status-tag">
+                      {s.displayLabels.prototype} · {recipe.state}
+                    </span>
                     <h3>{recipe.title}</h3>
                     <dl>
                       {recipe.ingredients.map((ingredient) => (
@@ -302,7 +302,7 @@ export default function StarryCocktailPage() {
               title={s.experiment.title}
             >
               <span className="starry-status-tag">
-                产品实验 / 非最终标准商品
+                {s.displayLabels.prototype} · 产品实验 / 非最终标准商品
               </span>
               <p>{s.experiment.note}</p>
               <h3>实验目标</h3>
@@ -318,7 +318,7 @@ export default function StarryCocktailPage() {
               <Tags items={s.event.scenes} />
               <div className="starry-event-plan">
                 <div>
-                  <p className="eyebrow">SERVICE CONCEPT / 服务方案</p>
+                  <p className="eyebrow">{s.displayLabels.planning}</p>
                   <p className="starry-event-price">
                     约 {s.event.servicePrice} 元
                     <span> / {s.event.cups} 杯</span>
@@ -331,8 +331,11 @@ export default function StarryCocktailPage() {
             <CaseSection
               id="content"
               english="CONTENT & MARKETING"
-              title="通过真实制作过程，表达产品与品牌。"
+              title="通过制作流程规划，表达产品与品牌。"
             >
+              <span className="starry-status-tag">
+                {s.displayLabels.planning}
+              </span>
               <p>
                 平台方向：<strong>{s.content.platform}</strong>。
                 {s.content.intention}
@@ -347,7 +350,7 @@ export default function StarryCocktailPage() {
                 ))}
               </ol>
               <p className="starry-note">
-                活动现场与饮品实拍尚未提供，不用生成照片替代真实现场，也不展示未经确认的发布、流量或获客结果。
+                此处为内容营销规划与脚本方案，不展示未经确认的发布、流量或获客结果。
               </p>
             </CaseSection>
             <CaseSection
@@ -399,6 +402,9 @@ export default function StarryCocktailPage() {
               english="PROJECT OUTPUTS"
               title="用具体产出，说明推进到了哪里。"
             >
+              <span className="starry-status-tag">
+                {s.displayLabels.planning}
+              </span>
               <p>
                 以下是已经形成的定位、方案与实验记录，不以未经确认的经营数据证明项目价值。
               </p>

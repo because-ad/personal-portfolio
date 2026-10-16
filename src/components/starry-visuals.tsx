@@ -131,7 +131,7 @@ export function StarryBoothSketch() {
       className="starry-booth-sketch"
       viewBox="0 0 640 470"
       role="img"
-      aria-label="移动摊位结构设计方案：小推车、操作桌、两根黑色支架、约95cm横杆及约85乘28cm悬挂刀刮布；非现场照片"
+      aria-label="移动摊位结构原型：小推车、操作桌、两根黑色支架、约95cm横杆及约85乘28cm悬挂刀刮布"
     >
       <path
         d="M150 52H490M150 43V61M490 43V61"
@@ -266,7 +266,11 @@ export function StarryVisualSystem() {
           </div>
           <figcaption>
             <span className="starry-concept-label">
-              Design Concept / 设计方案
+              {item.id === "booth"
+                ? starryCocktail.displayLabels.prototype
+                : item.id === "menu"
+                  ? starryCocktail.displayLabels.planning
+                  : starryCocktail.displayLabels.design}
             </span>
             <h3>
               0{index + 1} / {item.title} · {item.label}

@@ -3,7 +3,14 @@ export const starryCocktail = {
   name: "星光鸡尾酒",
   english: "STARRY COCKTAIL",
   subtitle: "现调鸡尾酒 · 果味特调",
-  type: "Independent Business Project / 独立商业项目",
+  type: "Independent Business Project / 真实独立项目 / 方案与项目过程展示",
+  scopeNote:
+    "该项目为本人实际推进的独立项目，当前作品集主要展示品牌、产品、价格、摊位、内容与执行方案等过程产出；因未完整保留现场影像资料，页面中的视觉展示以设计稿、结构方案与项目材料为主。",
+  displayLabels: {
+    design: "Design Concept / 设计方案",
+    prototype: "Prototype / 原型",
+    planning: "Planning Output / 方案产出",
+  },
   positioning: "移动式鸡尾酒摊位 / 活动调酒 / 轻量化线下饮品品牌",
   description:
     "从品牌定位、产品与价格设计，到移动摊位、视觉体系和内容营销的独立商业项目。",
@@ -38,7 +45,7 @@ export const starryCocktail = {
     ],
   },
   visualNote:
-    "当前未提供品牌定稿文件、饮品成品图或摊位实拍。以下图稿依据本人给出的视觉与结构要求绘制，均标注 Design Concept / 设计方案，不代表已经制作或拍摄的实物。",
+    "以下视觉展示依据项目的品牌与结构要求整理，以设计方案、结构原型与菜单方案产出呈现，不代表实物已经制作。",
   visualItems: [
     {
       id: "logo",
@@ -167,13 +174,13 @@ export const starryCocktail = {
       "第一视角制作",
       "摊位搭建",
       "饮品特写",
-      "活动现场",
+      "活动服务内容规划",
       "菜单展示",
       "品牌视觉",
     ],
     script: ["第一人称调制", "配方标注", "成品展示"],
     intention:
-      "通过真实制作过程建立专业感和视觉吸引力。内容以可实际拍摄的制作、搭建与产品细节为基础；未提供实拍或发布数据的内容只作为计划方向。",
+      "围绕制作流程、搭建步骤与产品细节规划内容，表达产品与品牌；当前展示内容方向与脚本方案，不代表已经发布或取得传播成果。",
   },
   businessThinking: [
     {
