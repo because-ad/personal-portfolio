@@ -7,10 +7,10 @@ export const career = {
   description:
     "李明春个人职业作品集，展示销售、项目执行、业务运营、团队管理、AI应用与数字化项目实践。",
   identity: "个人职业作品集 / Business & AI Portfolio",
-  subtitle: "业务运营 · 项目执行 · 商务拓展 · AI应用",
+  subtitle: "业务执行 · 项目推进 · 增长实践 · AI应用",
   tagline: "业务是方向，AI 是工作杠杆。",
   english:
-    "Business Operations / Project Execution / Business Development / AI Productivity",
+    "Business Execution / Project Delivery / Growth / AI Productivity",
   intro:
     "从销售、活动项目、门店运营和团队管理的一线实践出发，持续把业务问题转化为可执行流程、可验证结果和数字化作品。",
   about: [
