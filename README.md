@@ -1,4 +1,5 @@
 # personal-portfolio
+
 Personal portfolio website
 
 ## Development
@@ -28,7 +29,26 @@ Run `npm run start` after a successful build to serve the production output.
 
 In this Codex cloud environment, set `npm_config_cache=/workspace/.cache/npm` before npm commands because the default home cache is not writable. Runtime processes must be started again in new tasks.
 
-## V2 真实求职作品集
+## Career Portfolio V3 — 个人职业作品集
+
+当前网站面向销售、商务拓展、业务运营、项目执行、团队协作及 AI 应用等复合型岗位，不以单一渠道岗位作为主定位。延续已有视觉体系、技术栈与真实资料，本轮在独立 Preview 分支验收，不直接覆盖 Production。
+
+首页顺序：Hero → Key Results → Capability Map → Selected Work → Career Experience → AI & Digital Projects → Business Demo Lab → Independent Projects → Resume → Contact。关于与教育并入职业经历，原有工作方法与成果作为可展开的证据保留。
+
+- `src/data/projects.ts`：统一项目注册表，包含 `id`、`title`、`type`、`description`、`status`、`metrics`、`skills`、`route`、`year`；真实项目的时间和指标直接引用现有案例。未知年份为 `null`，不按当前日期猜测。
+- 项目类型：`real-experience`、`applied-ai`、`simulation`、`independent-project`。项目卡片、数字化实践和成果记录使用统一中英文标签；模拟数据不混入真实工作 KPI。
+- `selected` 控制代表项目展示；商业 Demo 和独立项目按 `type` 自动归类。增加数字化实践时填写 `practice` 的 Problem / Approach / Tools / Output / What I Learned，并在同一文件的数字化实践列表中排序。
+- `capabilityMap` 用稳定项目 ID 关联证据；`careerEvidence` 为三段真实经历提供 Situation / Responsibility / Capability，Action 和 Result 沿用原工作记录。
+- `src/components/project-ui.tsx`：项目标签、卡片、数字化实践索引与详情；`src/app/portfolio-v3.css`：新增内容的响应式样式，不改变原简历打印规则。
+- `/case-studies/ai-productivity`：沿用旧地址，升级为六项 AI 与数字化实践；保留原工作流、工具分级及已有求职材料说明。
+- `/projects/starry-cocktail`：星光鸡尾酒真实独立商业案例，包含品牌、视觉、移动摊位、产品菜单、原料、配方实验、活动服务、内容与能力映射。首页入口已可查看；不展示未经确认的营业额、客户数、利润或项目年份。
+- `src/data/starry-cocktail.ts`：本人提供的方案和实验资料，统一维护菜单价格/款数、尺寸、配方与状态说明；`src/components/starry-visuals.tsx`：五类明确标注 Design Concept 的 SVG / 网页设计图稿。没有实拍时不使用生成图片冒充真实现场；实验目标不写成已验证效果，服务报价不写成已成交收入。
+
+后续新增真实案例、商业 Demo 或独立项目时，先补全项目数据与可访问的路由，再配置相应展示。未提供的原始材料不创建虚假下载入口；`coming-soon` 表示详细案例待补充，不代表已经实现商业结果。
+
+原 `/resume`、`/resume-print`、两份 PDF、证件照、联系方式以及两个 Demo 的数据和交互逻辑继续保留。已有定向简历仍可单独投递，不代表整站职业定位。
+
+## 历史版本：V2 真实求职作品集
 
 李明春的求职定位为业务运营、项目执行、商务协作及渠道与伙伴方向。V2 保留原有米白 / 灰绿视觉与响应式布局，更新三段真实工作经历、三个项目案例、四项工作成果、教育与联系方式。
 
@@ -75,6 +95,6 @@ In this Codex cloud environment, set `npm_config_cache=/workspace/.cache/npm` be
 
 真实口径：直播账号 **3 天约 300 → 500 粉，后续约 580 粉**，不是从 0 增长 500；招聘与带教总数 **5 名，其中 2 名后续表现优秀**；约 60 万元为**累计接触项目预算量级**；约 30 人为**跨公司项目协作团队**，非个人直属团队。本人已在本次升级中再次确认直播起点。
 
-Demo 的全部公司、联系人、金额和跟进时间均为模拟。概率按阶段固定为 10%、25%、50%、75%、100%；Pipeline 和 Weighted Pipeline 排除 Won。转化率是当前 Won 数量除以全量记录，漏斗按当前阶段累计推算，不表示真实历史。筛选只影响表格和当前建议，不改变全量指标。所有修改只保留在当前页面，不接后端、不存储客户数据、不调用 AI API。
+Sales Pipeline Demo 的全部公司、联系人、金额和跟进时间均为模拟。概率按阶段固定为 10%、25%、50%、75%、100%；Open Pipeline 和 Weighted Pipeline 排除 Won，Won Value 单独展示。Lead → Won Conversion 是当前 Won 数量除以全量记录；阶段分布是当前互斥数量，Stage Progression 保留进入过的最远阶段，回退不抹去累计历程。筛选只影响表格和当前建议，不改变全量指标。修改只保留在当前页面，不接后端、不存储客户数据、不调用 AI API。Channel Partner Growth 使用独立的虚构伙伴池，胜率为 Won / (Won + Lost)，历史激活与当前活跃分开展示。
 
 后续可补充（不影响当前运行）：可公开的 SOP 原始文档、活动方案或工作记录、AI 研究与人工修订前后示例、工具熟练程度的进一步说明。未提供的材料不生成虚假下载地址，也不新增未经确认的效率收益。

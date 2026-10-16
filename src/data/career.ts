@@ -3,14 +3,24 @@ import { portfolio } from "./portfolio";
 /** 新作品集的求职表达；原简历资料独立保留，不自动改写已确认的 PDF。 */
 export const career = {
   siteUrl: "https://personal-portfolio-one-inky-35.vercel.app",
-  title: "李明春 | Business Development / B2B / Channel Operations",
+  title: "李明春 | Career Portfolio",
   description:
-    "李明春个人职业作品集，展示业务拓展、项目执行、门店运营、团队管理及 AI 应用相关经历。",
-  subtitle: "业务拓展 · ToB业务 · 渠道运营",
+    "李明春个人职业作品集，展示销售、项目执行、业务运营、团队管理、AI应用与数字化项目实践。",
+  identity: "个人职业作品集 / Business & AI Portfolio",
+  subtitle: "业务执行 · 项目推进 · 增长实践 · AI应用",
   tagline: "业务是方向，AI 是工作杠杆。",
-  english: "Business Development / B2B / Channel Operations",
+  english:
+    "Business Execution / Project Delivery / Growth / AI Productivity",
   intro:
-    "具备活动项目、销售推广、团队管理、门店运营和新人培训等一线业务经验，能够从业务目标出发完成任务拆解、流程设计与执行落地，并持续探索 AI 工具在业务、运营与效率提升中的实际应用。",
+    "从销售、活动项目、门店运营和团队管理的一线实践出发，持续把业务问题转化为可执行流程、可验证结果和数字化作品。",
+  about: [
+    "我目前处在职业早期阶段，经历横跨销售、活动项目与门店运营。这些经历持续训练了我理解需求、组织资源、推进执行、带人协作、流程标准化与快速学习的能力。",
+    "我也主动使用 AI 和数字化工具，把业务理解转化为实际作品；已有经历、独立实践和商业模拟在网站中分别标注。",
+  ],
+  educationNote:
+    "本科专业为生物工程，业务能力来自后续销售、活动项目与门店运营实践。",
+  contactIntro:
+    "欢迎就销售、商务拓展、业务与项目运营、项目执行、AI应用及其他复合型业务岗位交流。",
   aboutExperience:
     "我做过活动策划与现场执行，协调客户、供应商、人员、物料和时间；做过课程销售，从个人成交到带领约 10 人地推团队，进行人员分区、话术优化、目标拆解、现场监督与团队复盘；目前在黑马电竞参与门店运营、招聘带教、服务流程、SOP 搭建及直播引流。",
   metrics: [
@@ -298,7 +308,7 @@ export const caseStudies: readonly CaseStudy[] = [
     sections: [
       {
         title: "项目背景",
-        english: "BACKGROUND",
+        english: "SITUATION",
         paragraphs: [
           "活动类型覆盖婚礼、生日宴、开业、景区、团建及商业活动。参与百洞峡、森灵欢乐世界、槐荫船说、舞林风暴等项目，部分项目涉及数百人规模现场。",
           ...event.background,
@@ -306,7 +316,7 @@ export const caseStudies: readonly CaseStudy[] = [
       },
       {
         title: "我的职责",
-        english: "MY ROLE",
+        english: "RESPONSIBILITY",
         paragraphs: [xinchuang.summary],
         bullets: [
           "参与客户需求沟通、方案策划、人员与供应商协调。",
@@ -349,9 +359,9 @@ export const caseStudies: readonly CaseStudy[] = [
       },
       {
         title: "可以迁移到什么能力",
-        english: "TRANSFERABLE SKILLS",
+        english: "CAPABILITY",
         paragraphs: [
-          "项目运营中的任务拆解与节点跟进；商务或伙伴协作中的需求理解、多方沟通与资源协调；面对变化时的优先级判断。",
+          "项目运营中的任务拆解与节点跟进；商务协作中的需求理解、多方沟通与资源协调；面对变化时的优先级判断。",
         ],
       },
     ],
@@ -375,12 +385,12 @@ export const caseStudies: readonly CaseStudy[] = [
     sections: [
       {
         title: "项目背景",
-        english: "BACKGROUND",
+        english: "SITUATION",
         paragraphs: sales.background,
       },
       {
         title: "我的职责",
-        english: "MY ROLE",
+        english: "RESPONSIBILITY",
         paragraphs: [
           "带领约 10 人地推团队，把一线销售反馈转成团队可执行的方法。",
         ],
@@ -427,7 +437,7 @@ export const caseStudies: readonly CaseStudy[] = [
       },
       {
         title: "可以迁移到什么能力",
-        english: "TRANSFERABLE SKILLS",
+        english: "CAPABILITY",
         paragraphs: [
           "BD / 销售岗位的需求沟通、目标拆解与过程跟进；业务运营的执行监督和反馈优化。企业销售周期、决策链及行业知识需要在后续实践中继续积累。",
         ],
@@ -447,10 +457,10 @@ export const caseStudies: readonly CaseStudy[] = [
     tags: ["三天 SOP", "招聘与培训", "服务流程"],
     metrics: heima.highlights.map((m) => ({ value: m.value, label: m.note })),
     sections: [
-      { title: "项目背景", english: "BACKGROUND", paragraphs: sop.background },
+      { title: "项目背景", english: "SITUATION", paragraphs: sop.background },
       {
         title: "我的职责",
-        english: "MY ROLE",
+        english: "RESPONSIBILITY",
         paragraphs: [heima.summary],
         bullets: [
           "参与新员工面试、带教、试岗 SOP 设计与服务流程标准化。",
@@ -492,9 +502,9 @@ export const caseStudies: readonly CaseStudy[] = [
       },
       {
         title: "可以迁移到什么能力",
-        english: "TRANSFERABLE SKILLS",
+        english: "CAPABILITY",
         paragraphs: [
-          "运营岗位的流程梳理、服务标准与结果跟踪；伙伴支持中的培训材料整理和执行检查；团队协作中的统一标准与过程管理。",
+          "运营岗位的流程梳理、服务标准与结果跟踪；招聘培训中的材料整理和执行检查；团队协作中的统一标准与过程管理。",
         ],
       },
     ],
@@ -502,8 +512,8 @@ export const caseStudies: readonly CaseStudy[] = [
   {
     slug: "ai-productivity",
     number: "04",
-    title: "AI 是工作杠杆，输出要能实际使用。",
-    category: "AI-NATIVE PRODUCTIVITY",
+    title: "AI与数字化实践",
+    category: "AI & DIGITAL PROJECTS",
     organization: "个人工作实践",
     period: "持续实践",
     summary:
@@ -539,7 +549,7 @@ export const caseStudies: readonly CaseStudy[] = [
         ],
       },
       {
-        title: "三个实际应用案例",
+        title: "六项 AI与数字化实践",
         english: "ACTION",
         paragraphs: [],
       },
@@ -562,7 +572,7 @@ export const caseStudies: readonly CaseStudy[] = [
         title: "可以迁移到什么能力",
         english: "TRANSFERABLE SKILLS",
         paragraphs: [
-          "业务与行业研究、资料结构化、SOP 与培训材料整理、方案表达、岗位学习及小型业务 Demo 实现。AI 是工作杠杆，职业方向是业务拓展、ToB 业务与渠道运营。",
+          "业务与行业研究、资料结构化、SOP 与培训材料整理、方案表达、岗位学习及小型业务 Demo 实现。AI 是工作杠杆，输出要能实际使用；这些方法服务于业务、运营与项目任务。",
         ],
       },
     ],
@@ -570,10 +580,11 @@ export const caseStudies: readonly CaseStudy[] = [
 ];
 
 export const careerNavigation = [
-  { href: "/#projects", label: "项目案例" },
+  { href: "/#projects", label: "项目作品" },
   { href: "/#experience", label: "职业经历" },
-  { href: "/#ai", label: "AI应用" },
-  { href: "/#lab", label: "业务 Demo" },
+  { href: "/#capabilities", label: "能力" },
+  { href: "/#ai", label: "AI实践" },
+  { href: "/#lab", label: "Business Lab" },
   { href: "/#resume", label: "简历" },
 ];
 
