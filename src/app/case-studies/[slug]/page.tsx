@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { caseStudies } from "@/data/career";
-import {
-  CareerShell,
-  AiWorkflow,
-  AiApplications,
-  AiTools,
-} from "@/components/career-ui";
+import { CareerShell, AiWorkflow, AiTools } from "@/components/career-ui";
+import { projects } from "@/data/projects";
+import { DigitalProjectDetails, ProjectBadge } from "@/components/project-ui";
 import { ResultText } from "@/components/result-text";
 import "../../career.css";
+import "../../portfolio-v3.css";
 
 export function generateStaticParams() {
   return caseStudies.map((study) => ({ slug: study.slug }));
@@ -45,13 +43,14 @@ export default async function CasePage({ params }: Props) {
   if (!study) notFound();
   const index = caseStudies.indexOf(study);
   const next = caseStudies[(index + 1) % caseStudies.length];
+  const project = projects.find((item) => item.caseSlug === slug)!;
   return (
     <CareerShell>
       <main id="main" className={`container career-case-page case-${slug}`}>
         <nav className="career-breadcrumb" aria-label="面包屑">
           <Link href="/">首页</Link>
           <span aria-hidden="true">/</span>
-          <Link href="/#projects">项目案例</Link>
+          <Link href="/#projects">项目作品</Link>
           <span aria-hidden="true">/</span>
           <span>{study.title}</span>
         </nav>
@@ -59,6 +58,7 @@ export default async function CasePage({ params }: Props) {
           <p className="eyebrow">
             CASE STUDY {study.number} / {study.category}
           </p>
+          <ProjectBadge type={project.type} />
           <h1>{study.title}</h1>
           <p className="case-lead">{study.summary}</p>
           <p className="case-context">
@@ -100,7 +100,7 @@ export default async function CasePage({ params }: Props) {
                 </p>
                 <h2>{section.title}</h2>
                 {slug === "ai-productivity" && section.english === "ACTION" && (
-                  <AiApplications />
+                  <DigitalProjectDetails />
                 )}
                 {section.paragraphs.map((text) => (
                   <p key={text}>
@@ -135,8 +135,9 @@ export default async function CasePage({ params }: Props) {
               </Link>
             </div>
             <p className="case-footnote">
-              更多应用方向见 <Link href="/#ai">首页 AI 能力</Link>；本 Demo
-              的建议使用本地规则，不连接 AI API。
+              更多实践见 <Link href="/#ai">首页 AI与数字化实践</Link>
+              ；商业模拟数据不代表真实业绩，两个 Demo 的建议使用本地规则，不连接
+              AI API。
             </p>
           </section>
         )}

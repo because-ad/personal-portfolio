@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "zh_CN",
-    siteName: "Career Portfolio V2 — 李明春",
+    siteName: "李明春 Career Portfolio",
     title: career.title,
     description: career.description,
     url: "/",
