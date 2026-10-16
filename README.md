@@ -41,7 +41,8 @@ In this Codex cloud environment, set `npm_config_cache=/workspace/.cache/npm` be
 - `capabilityMap` 用稳定项目 ID 关联证据；`careerEvidence` 为三段真实经历提供 Situation / Responsibility / Capability，Action 和 Result 沿用原工作记录。
 - `src/components/project-ui.tsx`：项目标签、卡片、数字化实践索引与详情；`src/app/portfolio-v3.css`：新增内容的响应式样式，不改变原简历打印规则。
 - `/case-studies/ai-productivity`：沿用旧地址，升级为六项 AI 与数字化实践；保留原工作流、工具分级及已有求职材料说明。
-- `/projects/starry-cocktail`：独立项目入口和 Coming Soon 内容框架。只保留已有自主实践及本人给出的品牌规划，不展示未经确认的营业额、客户数、收入或项目年份。
+- `/projects/starry-cocktail`：星光鸡尾酒真实独立商业案例，包含品牌、视觉、移动摊位、产品菜单、原料、配方实验、活动服务、内容与能力映射。首页入口已可查看；不展示未经确认的营业额、客户数、利润或项目年份。
+- `src/data/starry-cocktail.ts`：本人提供的方案和实验资料，统一维护菜单价格/款数、尺寸、配方与状态说明；`src/components/starry-visuals.tsx`：五类明确标注 Design Concept 的 SVG / 网页设计图稿。没有实拍时不使用生成图片冒充真实现场；实验目标不写成已验证效果，服务报价不写成已成交收入。
 
 后续新增真实案例、商业 Demo 或独立项目时，先补全项目数据与可访问的路由，再配置相应展示。未提供的原始材料不创建虚假下载入口；`coming-soon` 表示详细案例待补充，不代表已经实现商业结果。
 

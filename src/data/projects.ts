@@ -1,5 +1,6 @@
 import { caseStudies } from "./career";
 import { huaweiResume } from "./resume-print";
+import { starryCocktail } from "./starry-cocktail";
 
 export const projectTypes = {
   "real-experience": {
@@ -42,6 +43,8 @@ export type PortfolioProject = {
   id: string;
   title: string;
   subtitle?: string;
+  categoryLabel?: string;
+  ctaLabel?: string;
   type: ProjectType;
   description: string;
   status: keyof typeof projectStatuses;
@@ -268,23 +271,18 @@ export const projects: readonly PortfolioProject[] = [
   },
   {
     id: "starry-cocktail",
-    title: "STARRY COCKTAIL",
-    subtitle: "星光鸡尾酒",
+    title: starryCocktail.english,
+    subtitle: starryCocktail.name,
     type: "independent-project",
-    description:
-      "从0进行移动鸡尾酒品牌定位、视觉设计、菜单与价格体系、摊位方案及营销内容规划。",
-    status: "coming-soon",
+    categoryLabel: starryCocktail.type,
+    ctaLabel: "查看项目",
+    description: starryCocktail.description,
+    status: "available",
     metrics: [],
     skills: ["Brand", "Product", "Pricing", "Operations", "Content"],
     route: "/projects/starry-cocktail",
     year: null,
     recordedPractice: huaweiResume.project.bullets[0],
-    nextContent: [
-      "品牌定位与视觉方案",
-      "菜单、产品与定价依据",
-      "移动摊位与出品流程",
-      "营销内容与项目复盘",
-    ],
   },
 ];
 

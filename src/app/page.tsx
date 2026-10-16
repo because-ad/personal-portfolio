@@ -399,7 +399,7 @@ export default function Home() {
               number="08"
               english="INDEPENDENT PROJECTS"
               title="独立项目，从想法推进到方案。"
-              description="单独记录自主项目与长期实践，具体案例材料逐步补充。"
+              description="单独记录自主推进的真实项目，关注方案、执行与可查看产出。"
             />
             <div className="independent-project-grid">
               {independentProjects.map((project) => (

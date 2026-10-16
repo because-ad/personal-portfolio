@@ -36,6 +36,9 @@ export function ProjectCard({
         {number && <span className="work-number">{number}</span>}
         <ProjectBadge type={project.type} />
       </div>
+      {project.categoryLabel && (
+        <p className="project-category-label">{project.categoryLabel}</p>
+      )}
       <p className="case-context">
         {project.organization && `${project.organization} · `}
         {project.year ?? projectStatuses[project.status]}
@@ -75,11 +78,12 @@ export function ProjectCard({
         href={project.route}
         aria-label={`查看${project.title}${project.status === "coming-soon" ? "项目框架" : "项目"}`}
       >
-        {project.status === "coming-soon"
-          ? "查看项目框架"
-          : project.type === "simulation"
-            ? "查看模拟项目"
-            : "查看项目与证据"}{" "}
+        {project.ctaLabel ??
+          (project.status === "coming-soon"
+            ? "查看项目框架"
+            : project.type === "simulation"
+              ? "查看模拟项目"
+              : "查看项目与证据")}{" "}
         ↗
       </Link>
     </article>

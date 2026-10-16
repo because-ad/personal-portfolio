@@ -131,6 +131,12 @@
   gap: 12px;
   margin-bottom: 16px;
 }
+.portfolio-project-card .project-category-label {
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
 .portfolio-project-card .case-context {
   font-size: 12px;
 }
